@@ -1,0 +1,1 @@
+CREATE INDEX phones_hash_index ON rentals.clients USING HASH (phone);

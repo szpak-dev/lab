@@ -1,1 +1,1 @@
-CREATE SCHEMA rentals;
+CREATE SCHEMA IF NOT EXISTS rentals;

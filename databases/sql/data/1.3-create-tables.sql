@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS rentals.cars (
 CREATE TABLE IF NOT EXISTS rentals.clients(
     id serial PRIMARY KEY,
     full_name varchar(64) not null,
-    phone varchar(16) not null,
+    phone varchar(32) not null,
     registered_at date not null
 );
 

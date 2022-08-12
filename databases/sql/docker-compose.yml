@@ -11,3 +11,10 @@ services:
       - '5432:5432'
     volumes:
       - ./data:/opt/scripts
+
+  db_sql:
+    container_name: db_sql
+    build:
+      context: .
+    volumes:
+      - ./:/opt

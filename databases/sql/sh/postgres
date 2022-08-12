@@ -1,0 +1,1 @@
+PGPASSWORD=postgres psql -p 5432 -U postgres -h postgres

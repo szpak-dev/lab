@@ -1,0 +1,1 @@
+docker exec -it db_sql sh
