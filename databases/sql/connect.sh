@@ -1,1 +1,1 @@
-docker exec -it db_sql sh
+docker exec -it databases_sql_app sh
