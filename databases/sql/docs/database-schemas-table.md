@@ -1,4 +1,4 @@
-# Running SQL Scripts (Lesson: Database, Schemas and Table)
+# Running SQL Scripts (Lesson: Database, Schemas and Tables)
 If you take a look at the `*.sql` scripts inside `/opt/data` directory, you will notice they are prefixed with numbers. 
 Each number corresponds to article ordinal and query ordinal inside post. To fulfill first part of the tutorial, please 
 run first four scripts. How?
