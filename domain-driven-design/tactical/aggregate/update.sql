@@ -1,0 +1,1 @@
+UPDATE carts SET total_value += 12.99,version += 1 WHERE cart_id=123 AND version = 1;
