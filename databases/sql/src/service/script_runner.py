@@ -1,8 +1,8 @@
-import db.connector as db_connector
+import connector
 from pathlib import Path
 
 path = '/opt/data'
-cursor = db_connector.cursor(no_transaction=True)
+cursor = connector.cursor(no_transaction=True)
 
 
 def run_script(filename):

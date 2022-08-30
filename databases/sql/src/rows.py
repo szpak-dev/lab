@@ -1,11 +1,11 @@
-from faker import Faker
+
 from pypika import Table, PostgreSQLQuery as Query
 import db.connector as db_connector
 
 
-faker = Faker(['en-GB'])
+
 connection = db_connector.connection(no_transaction=False)
-cursor = db_connector.cursor(no_transaction=False)
+cursor = db_connector.cursor()
 
 columns_map = {
     'clients': ('full_name', 'phone', 'registered_at'),
