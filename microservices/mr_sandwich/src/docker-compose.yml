@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+
+  load_balancer:
+    image: caddy:2.6.1-alpine
+    restart: unless-stopped
+    container_name: microservices_mr_sandwich_load_balancer
+    networks:
+      - microservices
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - $PWD/load_balancer/Caddyfile:/etc/caddy/Caddyfile
+
+  auth:
+    container_name: microservices_mr_sandwich_auth
+    networks:
+      - microservices
+    expose:
+      - "5000"
+    build:
+      context: ./auth
+    volumes:
+      - ./auth:/opt
+
+  food_factory:
+    container_name: microservices_mr_sandwich_food_factory
+    networks:
+      - microservices
+    expose:
+      - "5000"
+    build:
+      context: ./food_factory
+    volumes:
+      - ./food_factory:/opt
+#
+#  web_store:
+#    container_name: microservices_mr_sandwich_web_store
+#    build:
+#      context: ./web_store
+#    volumes:
+#      - ./:/opt
+#
+#  delivery:
+#    container_name: microservices_mr_sandwich_delivery
+#    build:
+#      context: ./delivery
+#    volumes:
+#      - ./:/opt
+networks:
+  microservices:
+    name: microservices

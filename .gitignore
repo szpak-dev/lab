@@ -1,3 +1,4 @@
 .DS_Store
 .idea
-databases/sql/db_sql_venv
+databases/sql/venv
+microservices/**/src/**/venv
