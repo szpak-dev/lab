@@ -1,0 +1,10 @@
+{
+    log {
+        output stderr
+        level error
+    }
+}
+
+localhost {
+    reverse_proxy /food_factory/* microservices_mr_sandwich_auth:5000
+}
