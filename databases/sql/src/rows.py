@@ -1,8 +1,5 @@
-
 from pypika import Table, PostgreSQLQuery as Query
 import db.connector as db_connector
-
-
 
 connection = db_connector.connection(no_transaction=False)
 cursor = db_connector.cursor()

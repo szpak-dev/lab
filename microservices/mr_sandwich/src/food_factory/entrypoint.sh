@@ -1,2 +1,2 @@
 pip install -r requirements.txt --quiet
-flask --app flaskr run --host=0.0.0.0
+flask --app app run --host=0.0.0.0 --port=80
