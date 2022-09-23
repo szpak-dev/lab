@@ -6,5 +6,11 @@
 }
 
 localhost {
-    reverse_proxy /food_factory/* microservices_mr_sandwich_auth:5000
+    reverse_proxy /auth/* microservices_mr_sandwich_auth:80 {
+
+    }
+
+    reverse_proxy /food_factory/* microservices_mr_sandwich_auth:80 {
+         header_up Host microservices_mr_sandwich_food_factory
+    }
 }

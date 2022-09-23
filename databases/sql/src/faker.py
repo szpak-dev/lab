@@ -1,6 +1,5 @@
 from faker import Faker
 
-
 faker = Faker(['en-GB'])
 
 
