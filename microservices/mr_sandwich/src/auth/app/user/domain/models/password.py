@@ -1,2 +1,3 @@
 class Password:
-    pass
+    def __init__(self, password: str):
+        self.password = password

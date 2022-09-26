@@ -1,2 +1,3 @@
 class Role:
-    pass
+    def __init__(self, role: str):
+        self.role = role
