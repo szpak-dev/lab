@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+
+  structurizr:
+    container_name: microservices_structurizr
+    image: structurizr/cli
+    volumes:
+      - ./c4:/usr/local/structurizr

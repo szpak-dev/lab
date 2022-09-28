@@ -1,4 +1,4 @@
-from user.domain.models.user import User
+from app.user.domain.models.user import User
 
 
 class JwtManager:
