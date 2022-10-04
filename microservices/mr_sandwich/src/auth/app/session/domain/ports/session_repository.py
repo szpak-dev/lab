@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-from app.session.domain.models.session import Session
-from app.session.domain.models.session_id import SessionId
+from session.domain.value_objects import SessionId, Session
 
 
 class SessionRepository(ABC):
@@ -9,13 +8,17 @@ class SessionRepository(ABC):
         pass
 
     @abstractmethod
-    def exists(self, session_id: SessionId) -> bool:
+    def exists(self, session_id: str) -> bool:
         pass
 
     @abstractmethod
-    def remove(self, session_id) -> None:
+    def remove(self, session_id: str) -> None:
         pass
 
     @abstractmethod
-    def get(self, session_id) -> Session:
+    def get(self, session_id: str) -> Session:
+        pass
+
+    @abstractmethod
+    def get_for_user(self, user_id: str) -> Session:
         pass

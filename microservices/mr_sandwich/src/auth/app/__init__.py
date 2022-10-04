@@ -1,9 +1,8 @@
 from flask import Flask, request, abort, make_response
 
-from app.session.adapters.http.interceptor import Interceptor
-from app.user.adapters.db.in_memory_user_authenticator import InMemoryUserAuthenticator
-
-interceptor = Interceptor()
+from app.session.intercept_request import InterceptRequest
+from app.session.login_user import LoginUser
+from app.session.logout_user import LogoutUser
 
 
 def create_app():
@@ -11,29 +10,21 @@ def create_app():
 
     @app.route('/auth/login')
     def login():
-        session_id = InMemoryUserAuthenticator().check_credentials('test_user', 'password')
-        response = make_response('', 201)
-        response.set_cookie('session_id', session_id.id)
-        return response
+        return LoginUser().run('test_user', 'encoded')
 
     @app.route('/auth/logout')
     def logout():
-        response = make_response('', 204)
-        response.delete_cookie('session_id')
+        return LogoutUser().run('user-id')
+
+    @app.route('/users/me')
+    def me():
+        response = make_response({"id": "test", "username": "test-user", "role": "SUPER_ADMIN"}, 200)
         return response
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<string:path>')
     @app.route('/<path:path>')
     def hello(path):
-        try:
-            response = interceptor.swallow(request)
-
-            if response.status_code == 200:
-                return make_response(response.text, 200)
-
-            abort(response.status_code)
-        except RuntimeError:
-            abort(401)
+        return InterceptRequest().run(request)
 
     return app

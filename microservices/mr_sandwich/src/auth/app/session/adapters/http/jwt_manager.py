@@ -1,9 +1,6 @@
-from app.user.domain.models.user import User
-
-
 class JwtManager:
     def validate(self, jwt: str):
         pass
 
-    def create(self, user: User):
+    def create(self, username: str):
         pass
