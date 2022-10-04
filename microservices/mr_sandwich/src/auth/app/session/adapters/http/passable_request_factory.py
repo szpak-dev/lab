@@ -1,4 +1,4 @@
-from requests import Request
+from flask import Request
 
 
 class PassableRequestFactory:

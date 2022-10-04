@@ -1,12 +1,10 @@
 from flask import Request
 
-from app.session.domain.models.identity import Identity
-from app.session.domain.models.jwt import Jwt
-from app.session.domain.models.session_id import SessionId
-from app.session.domain.ports.identity_extractor import IdentityExtractor
+from app.session.domain.value_objects import Identity, SessionId, Jwt
+from app.session.domain.errors import IdentityNotFound
 
 
-class RequestIdentityExtractor(IdentityExtractor):
+class HttpRequestIdentityExtractor:
     def extract(self, request: Request) -> Identity:
         session_id = self._extract_session_id(request)
         if session_id:
@@ -16,18 +14,18 @@ class RequestIdentityExtractor(IdentityExtractor):
         if jwt:
             return Identity(jwt=Jwt(jwt))
 
-        raise RuntimeError('No Identity found within Request')
+        raise IdentityNotFound
 
     @staticmethod
     def _extract_session_id(flask_request: Request):
         if flask_request.cookies.get('session_id'):
             return flask_request.cookies.get('session_id')
+
         return False
 
     @staticmethod
     def _extract_jwt(flask_request: Request):
         if flask_request.headers.get('Authorization'):
             return flask_request.headers.get('Authorization')
+
         return False
-
-
