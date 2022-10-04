@@ -3,6 +3,7 @@ from flask import Flask, request, abort, make_response
 from app.session.intercept_request import InterceptRequest
 from app.session.login_user import LoginUser
 from app.session.logout_user import LogoutUser
+from app.user.get_current_user import GetCurrentUser
 
 
 def create_app():
@@ -18,8 +19,7 @@ def create_app():
 
     @app.route('/users/me')
     def me():
-        response = make_response({"id": "test", "username": "test-user", "role": "SUPER_ADMIN"}, 200)
-        return response
+        return GetCurrentUser().run()
 
     @app.route('/', defaults={'path': ''})
     @app.route('/<string:path>')

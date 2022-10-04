@@ -1,6 +1,10 @@
-from typing import List, Callable
 import functools
-from dataclasses import dataclass, field
+from typing import List, Callable
+from abc import ABC, abstractmethod
+
+
+class ApplicationCommand:
+    pass
 
 
 class DomainEvent:
@@ -21,19 +25,20 @@ class AggregateRoot:
         return events
 
 
-@dataclass
-class Observable:
-    observers: List[Callable] = field(default_factory=list)
+class MediatorEvent:
+    pass
 
-    def register(self, observer: Callable):
-        self.observers.append(observer)
 
-    def deregister(self, observer: Callable):
-        self.observers.remove(observer)
+class MediatorComponent(ABC):
+    @abstractmethod
+    def on_event(self, event: MediatorEvent):
+        pass
 
-    def notify(self, *args, **kwargs):
-        for observer in self.observers:
-            observer(*args, **kwargs)
+
+class Mediator(ABC):
+    @abstractmethod
+    def notify(self, sender: MediatorComponent, event: MediatorEvent) -> None:
+        pass
 
 
 def docstring_message(cls):

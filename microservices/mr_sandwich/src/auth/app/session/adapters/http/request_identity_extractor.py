@@ -29,3 +29,7 @@ class HttpRequestIdentityExtractor:
             return flask_request.headers.get('Authorization')
 
         return False
+
+
+def extract_identity(request: Request) -> Identity:
+    return HttpRequestIdentityExtractor().extract(request)

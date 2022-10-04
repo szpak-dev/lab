@@ -1,11 +1,13 @@
 from flask import make_response
-from app.hooks import on_authentication_started
+from app.session.adapters import session_repository
+from app.shared import ApplicationCommand
 
 
-class LoginUser:
-    def run(self, username: str, plain_password: str):
-        on_authentication_started(username, plain_password)
+class LoginUser(ApplicationCommand):
+    @staticmethod
+    def run(username: str, plain_password: str):
+        session = session_repository().get_for_user(username)
 
         response = make_response('', 201)
-        response.set_cookie('session_id', 'session-id')
+        response.set_cookie('session_id', session.id)
         return response
