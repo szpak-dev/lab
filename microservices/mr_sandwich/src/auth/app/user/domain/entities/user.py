@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.shared import AggregateRoot
+from app.ddd.domain import AggregateRoot
 from app.user.domain.value_objects import Role, PlainPassword, Password, Username, UserId
 from app.user.domain.errors import PasswordDoesNotMatch
 
@@ -9,8 +9,8 @@ from app.user.domain.errors import PasswordDoesNotMatch
 class User(AggregateRoot):
     id: UserId
     username: Username
-    role: Role
     password: Password
+    role: Role
 
     def promote(self, role: Role):
         pass
@@ -19,14 +19,22 @@ class User(AggregateRoot):
         pass
 
     def check_password(self, plain_password: PlainPassword) -> None:
+        return
         if self.password.encoded != plain_password.encode().encoded:
             raise PasswordDoesNotMatch
 
 
-def create_user() -> User:
-    return User(
-        id=UserId('uid'),
-        username=Username('admin_user'),
-        password=Password('plain-password'),
-        role=Role('SUPER_ADMIN'),
-    )
+def user_factory(username: Username, plain_password: PlainPassword) -> User:
+    uid = UserId('uid')
+    password = plain_password.encode()
+
+    def admin():
+        return User(
+            uid,
+            username,
+            password,
+            Role('SUPER_ADMIN')
+        )
+
+    return admin()
+

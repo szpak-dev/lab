@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
+
+from app.ddd.repository import BaseRepository
 from app.session.domain.value_objects import Session
 
 
-class SessionRepository(ABC):
+class SessionRepository(BaseRepository):
     @abstractmethod
     def save(self, username: str) -> None:
         pass

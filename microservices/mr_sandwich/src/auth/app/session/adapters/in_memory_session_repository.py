@@ -3,14 +3,18 @@ from app.session.domain.value_objects import SessionId, Session
 from app.session.domain.ports.session_repository import SessionRepository
 
 active_sessions = {}
-active_sessions_by_user_id = {}
+active_sessions_by_username = {}
 
 
 class InMemorySessionRepository(SessionRepository):
-    def save(self, user_id: str) -> None:
+    def with_type(self):
+        return self
+
+    def save(self, username: str) -> None:
         session_id = SessionId.generate()
-        active_sessions[session_id.id] = user_id
-        active_sessions_by_user_id[user_id] = session_id.id
+
+        active_sessions[session_id.id] = username
+        active_sessions_by_username[username] = session_id.id
 
     def exists(self, session_id: str) -> bool:
         return bool(active_sessions.get(session_id))
@@ -23,11 +27,14 @@ class InMemorySessionRepository(SessionRepository):
         pass
 
     def get(self, session_id: str) -> Session:
-        return Session('session-id')
+        return Session('sid')
 
     def get_for_user(self, username: str) -> Session:
-        session_id = active_sessions.get(username)
-        if session_id:
-            return Session(session_id)
+        # session_id = active_sessions.get(username)
+        # if not session_id:
+        #     raise SessionNotFound
 
-        raise SessionNotFound
+        session_id = 'sid'
+        return Session(session_id)
+
+

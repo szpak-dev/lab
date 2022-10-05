@@ -1,12 +1,20 @@
 from dataclasses import dataclass
-from random import randrange
 from typing import TypeVar
+
+from app.shared import generate_number_base64
+from app.user.domain.value_objects import Username, Password
 
 
 @dataclass
 class Credentials:
     username: str
     password: str
+
+    def username(self):
+        return Username(self.username)
+
+    def password(self):
+        return Password(self.password)
 
 
 @dataclass
@@ -50,13 +58,5 @@ class SessionId:
 
     @staticmethod
     def generate(length: int = 20) -> T:
-        chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-        steps = range(0, length)
-
-        num = []
-        for step in steps:
-            character_index = randrange(0, len(chars) - 1)
-            num.append(chars[character_index])
-
-        number = ''.join(num)
+        number = generate_number_base64(length)
         return SessionId(number)

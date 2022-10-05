@@ -1,8 +1,8 @@
-from app.shared import ApplicationCommand
-from app.user.domain.entities.user import create_user
+from app.ddd.application import ApplicationCommand
+from app.user.domain.entities.user import user_factory
 
 
 class GetCurrentUser(ApplicationCommand):
     @staticmethod
     def run():
-        return create_user()
+        return user_factory()
