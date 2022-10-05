@@ -1,44 +1,5 @@
 import functools
-from typing import List, Callable
-from abc import ABC, abstractmethod
-
-
-class ApplicationCommand:
-    pass
-
-
-class DomainEvent:
-    def __init__(self, name):
-        self.name = name
-
-
-class AggregateRoot:
-    def __init__(self):
-        self._events: List[DomainEvent] = []
-
-    def emit_event(self, event: DomainEvent) -> None:
-        self._events.append(event)
-
-    def release_events(self) -> List[DomainEvent]:
-        events = self._events
-        self._events = []
-        return events
-
-
-class MediatorEvent:
-    pass
-
-
-class MediatorComponent(ABC):
-    @abstractmethod
-    def on_event(self, event: MediatorEvent):
-        pass
-
-
-class Mediator(ABC):
-    @abstractmethod
-    def notify(self, sender: MediatorComponent, event: MediatorEvent) -> None:
-        pass
+from random import randrange
 
 
 def docstring_message(cls):
@@ -52,3 +13,15 @@ def docstring_message(cls):
 
     cls.__init__ = wrapped_init
     return cls
+
+
+def generate_number_base64(length: int = 32):
+    chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    steps = range(0, length)
+
+    num = []
+    for step in steps:
+        character_index = randrange(0, len(chars) - 1)
+        num.append(chars[character_index])
+
+    return ''.join(num)

@@ -1,29 +1,32 @@
-from dataclasses import dataclass
+from typing import List
 
-from app.shared import Mediator, MediatorComponent, MediatorEvent
+from app.mediator import Mediator, MediatorComponent
 from app.mediator.session_module_component import SessionModule
 from app.mediator.user_module_component import UserModule
+from app.mediator.bus_event import BusEvent
 
 
-@dataclass
-class EventBus(Mediator):
+class _EventBus(Mediator):
     def __init__(self):
-        self.user_module = UserModule(event_bus=self)
-        self.session_module = SessionModule(event_bus=self)
+        self.user_module = UserModule(mediator=self)
+        self.session_module = SessionModule(mediator=self)
 
-    def notify(self, sender: MediatorComponent, event: MediatorEvent) -> None:
-        if isinstance(sender, SessionModule):
-            self.user_module.on_event(event)
+    def notify(self, sender: MediatorComponent, event: str, data: List = []) -> None:
+        self._log(str(sender), event)
 
-        if isinstance(sender, UserModule):
-            self.session_module.on_event(event)
+        if event == BusEvent.AUTHENTICATION_STARTED:
+            self.user_module.on_authorization_started(data)
+
+        if event == BusEvent.CREDENTIALS_CONFIRMED:
+            username = data[0]
+            self.session_module.on_credentials_confirmed(username)
+
+        if event == BusEvent.AUTHENTICATION_SUCCESSFUL:
+            pass
+
+    @staticmethod
+    def _log(sender: str, event: str):
+        print('[EventBus] Sender: {}, Event: {}'.format(sender, event), flush=True)
 
 
-__bus = []
-
-
-def event_bus_factory() -> EventBus:
-    if __bus.count == 0:
-        __bus.append(EventBus())
-
-    return __bus[0]
+bus = _EventBus()

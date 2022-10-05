@@ -1,7 +1,9 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+
+from app.ddd.repository import BaseRepository
 
 
-class JwtRepository(ABC):
+class JwtRepository(BaseRepository):
     @abstractmethod
     def create(self, username: str) -> None:
         pass

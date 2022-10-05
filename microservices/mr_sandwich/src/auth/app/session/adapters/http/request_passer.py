@@ -3,10 +3,10 @@ from requests import Session, Response
 s = Session()
 
 
-class HttpRequestPasser:
+class _HttpRequestPasser:
     def execute(self, prepared_request) -> Response:
         return s.send(prepared_request)
 
 
 def pass_request(prepared_request) -> Response:
-    return HttpRequestPasser().execute(prepared_request)
+    return _HttpRequestPasser().execute(prepared_request)

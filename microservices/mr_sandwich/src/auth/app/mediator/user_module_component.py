@@ -1,13 +1,14 @@
-from app.shared import MediatorComponent, MediatorEvent
-from app.user.adapters import UserCredentialsChecker
-from app.mediator.events import AuthenticationStarted, AuthenticationSuccessful, CredentialsConfirmed
+from app.mediator import MediatorComponent
+from app.user.adapters import credentials_checker
+from app.mediator.bus_event import BusEvent
 
 
 class UserModule(MediatorComponent):
-    def __init__(self, event_bus):
-        self._event_bus = event_bus
+    def on_authorization_started(self, data):
+        username, password = data
+        credentials_checker.check(username, password)
 
-    def on_event(self, event: MediatorEvent):
-        if isinstance(event, AuthenticationStarted):
-            UserCredentialsChecker().check(event.username, event.password)
-            return self._event_bus.notify(self, CredentialsConfirmed(event.username))
+        self.emit_credentials_confirmed(username)
+
+    def emit_credentials_confirmed(self, username: str):
+        self.mediator.notify(self, BusEvent.CREDENTIALS_CONFIRMED, [username])

@@ -1,6 +1,6 @@
 from flask import Request
 
-from app.shared import ApplicationCommand
+from app.ddd.application import ApplicationCommand
 from app.session.adapters.http.request_identity_extractor import extract_identity
 from app.session.domain.services import assert_valid_identity
 from app.session.adapters.http.passable_request_factory import create_passable_request

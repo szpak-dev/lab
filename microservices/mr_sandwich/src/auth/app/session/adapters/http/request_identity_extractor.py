@@ -4,7 +4,7 @@ from app.session.domain.value_objects import Identity, SessionId, Jwt
 from app.session.domain.errors import IdentityNotFound
 
 
-class HttpRequestIdentityExtractor:
+class _HttpRequestIdentityExtractor:
     def extract(self, request: Request) -> Identity:
         session_id = self._extract_session_id(request)
         if session_id:
@@ -32,4 +32,4 @@ class HttpRequestIdentityExtractor:
 
 
 def extract_identity(request: Request) -> Identity:
-    return HttpRequestIdentityExtractor().extract(request)
+    return _HttpRequestIdentityExtractor().extract(request)

@@ -7,9 +7,9 @@ def assert_valid_identity(identity: Identity):
     value = identity.value()
 
     if identity.requested_from_internet():
-        return session_repository().assert_exists(value)
+        return session_repository.assert_exists(value)
 
     if identity.requested_from_subnet():
-        return jwt_repository().assert_is_ours(value)
+        return jwt_repository.assert_is_ours(value)
 
     raise SessionNotFound

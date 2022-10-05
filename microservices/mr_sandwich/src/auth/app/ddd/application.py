@@ -1,0 +1,2 @@
+class ApplicationCommand:
+    pass
