@@ -1,6 +1,10 @@
 from typing import List
 
 
+class DomainError(Exception):
+    pass
+
+
 class DomainEvent:
     def __init__(self, name):
         self.name = name

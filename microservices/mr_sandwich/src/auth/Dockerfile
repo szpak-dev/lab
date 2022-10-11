@@ -1,12 +1,8 @@
-FROM alpine:3.15.6
+FROM python:3.9.14-alpine3.16
 
 ADD . /opt
 WORKDIR /opt
 
-RUN apk add --update --no-cache python3 \
-    && ln -sf python3 /usr/bin/python \
-    && python3 -m ensurepip \
-    && python -m venv venv \
-    && pip3 install -r requirements.txt --quiet
+RUN pip3 install --upgrade pip --quiet && pip3 install -r requirements.txt --quiet
 
 ENTRYPOINT /opt/entrypoint.sh

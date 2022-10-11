@@ -7,34 +7,36 @@ active_sessions_by_username = {}
 
 
 class InMemorySessionRepository(SessionRepository):
-    def with_type(self):
-        return self
-
     def save(self, username: str) -> None:
-        session_id = SessionId.generate()
+        session = Session.new()
+        raw_session_id = session.raw_id()
 
-        active_sessions[session_id.id] = username
-        active_sessions_by_username[username] = session_id.id
+        active_sessions[raw_session_id] = username
+        active_sessions_by_username[username] = raw_session_id
 
-    def exists(self, session_id: str) -> bool:
-        return bool(active_sessions.get(session_id))
+    def exists(self, session_id: SessionId) -> bool:
+        return bool(active_sessions.get(session_id.raw()))
 
-    def assert_exists(self, session_id: str) -> None:
+    def assert_exists(self, session_id: SessionId) -> None:
         if not self.exists(session_id):
             raise SessionNotFound('Session Id found in cookie does not exist')
 
-    def remove(self, session_id: str) -> None:
+    def remove(self, session_id: SessionId) -> None:
         pass
 
-    def get(self, session_id: str) -> Session:
-        return Session('sid')
-
-    def get_for_user(self, username: str) -> Session:
-        # session_id = active_sessions.get(username)
-        # if not session_id:
-        #     raise SessionNotFound
-
-        session_id = 'sid'
+    def get(self, session_id: SessionId) -> Session:
         return Session(session_id)
 
+    def get_for_user(self, username: str) -> Session:
+        raw_session_id = active_sessions_by_username.get(username)
+        if not raw_session_id:
+            raise SessionNotFound
 
+        return Session(SessionId(raw_session_id))
+
+    def get_username(self, session_id: SessionId) -> str:
+        username = active_sessions.get(session_id.raw())
+        if not username:
+            raise SessionNotFound
+
+        return username

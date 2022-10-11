@@ -15,8 +15,8 @@ def docstring_message(cls):
     return cls
 
 
-def generate_number_base64(length: int = 32):
-    chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+def generate_number_base64(length: int = 32) -> str:
+    chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/'
     steps = range(0, length)
 
     num = []
