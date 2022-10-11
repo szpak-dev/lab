@@ -8,7 +8,7 @@ class Password:
 
 @dataclass
 class PlainPassword:
-    plain: str
+    value: str
 
     def encode(self) -> Password:
         return Password('hashed-encoded')
@@ -16,7 +16,7 @@ class PlainPassword:
 
 @dataclass
 class Role:
-    role: str
+    value: str
 
 
 @dataclass
@@ -26,4 +26,4 @@ class UserId:
 
 @dataclass
 class Username:
-    username: str
+    value: str

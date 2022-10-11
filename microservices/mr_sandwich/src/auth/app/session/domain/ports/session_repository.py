@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from app.ddd.repository import BaseRepository
-from app.session.domain.value_objects import Session
+from app.session.domain.value_objects import Session, SessionId
 
 
 class SessionRepository(BaseRepository):
@@ -10,21 +10,25 @@ class SessionRepository(BaseRepository):
         pass
 
     @abstractmethod
-    def exists(self, session_id: str) -> bool:
+    def exists(self, session_id: SessionId) -> bool:
         pass
 
     @abstractmethod
-    def assert_exists(self, session_id: str) -> None:
+    def assert_exists(self, session_id: SessionId) -> None:
         pass
 
     @abstractmethod
-    def remove(self, session_id: str) -> None:
+    def remove(self, session_id: SessionId) -> None:
         pass
 
     @abstractmethod
-    def get(self, session_id: str) -> Session:
+    def get(self, session_id: SessionId) -> Session:
         pass
 
     @abstractmethod
     def get_for_user(self, username: str) -> Session:
+        pass
+
+    @abstractmethod
+    def get_username(self, session_id: SessionId) -> str:
         pass
