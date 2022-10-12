@@ -1,5 +1,4 @@
-from app.shared import docstring_message
-from app.ddd.domain import DomainError
+from app.shared import docstring_message, DomainError
 
 
 @docstring_message

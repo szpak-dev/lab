@@ -14,5 +14,6 @@ session_repository: SessionRepository = InMemorySessionRepository()
 jwt_repository: JwtRepository = InMemoryJwtRepository()
 request_interceptor: RequestInterceptor = HttpRequestInterceptor(session_repository, jwt_repository)
 session_transceiver: SessionTransceiver = MediatorSessionTransceiver(event_bus, session_repository)
+
 event_bus.session_transceiver = session_transceiver
 api_service: ApiService = HttpApiService(session_repository, session_transceiver)

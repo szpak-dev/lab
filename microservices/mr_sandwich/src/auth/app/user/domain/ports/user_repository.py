@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from app.user.domain.entities.user import User
-from app.ddd.repository import BaseRepository
+from app.shared import BaseRepository
 
 
 class UserRepository(BaseRepository):

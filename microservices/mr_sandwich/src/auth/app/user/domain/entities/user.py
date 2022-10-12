@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.ddd.domain import AggregateRoot
+from app.shared import AggregateRoot
 from app.user.domain.value_objects import Role, PlainPassword, Password, Username, UserId
 from app.user.domain.errors import PasswordDoesNotMatch
 

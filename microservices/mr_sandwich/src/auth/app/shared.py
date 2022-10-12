@@ -1,4 +1,6 @@
 import functools
+from abc import ABC
+from typing import List
 from random import randrange
 
 
@@ -25,3 +27,29 @@ def generate_number_base64(length: int = 32) -> str:
         num.append(chars[character_index])
 
     return ''.join(num)
+
+
+class DomainError(Exception):
+    pass
+
+
+class DomainEvent:
+    def __init__(self, name):
+        self.name = name
+
+
+class AggregateRoot:
+    def __init__(self):
+        self._events: List[DomainEvent] = []
+
+    def emit_event(self, event: DomainEvent) -> None:
+        self._events.append(event)
+
+    def release_events(self) -> List[DomainEvent]:
+        events = self._events
+        self._events = []
+        return events
+
+
+class BaseRepository(ABC):
+    pass

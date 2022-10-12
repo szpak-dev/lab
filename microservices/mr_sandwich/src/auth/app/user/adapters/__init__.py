@@ -14,5 +14,6 @@ user_repository: UserRepository = InMemoryUserRepository()
 credentials_checker: CredentialsChecker = UserCredentialsChecker(user_repository)
 api_service: ApiService = HttpApiService(user_repository)
 user_creator: UserCreator = CliUserCreator(user_repository)
+
 user_transceiver: UserTransceiver = MediatorUserTransceiver(event_bus, credentials_checker)
 event_bus.user_transceiver = user_transceiver

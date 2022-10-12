@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class UserTransceiver(ABC):
     @abstractmethod
-    def on_authorization_started(self, data):
+    def on_authentication_started(self, data):
         pass
 
     @abstractmethod
