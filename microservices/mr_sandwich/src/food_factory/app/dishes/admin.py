@@ -36,5 +36,5 @@ class RecipeAdmin(admin.ModelAdmin):
 
 @admin.register(Dish)
 class DishAdmin(admin.ModelAdmin):
-    list_display = ('public_id', 'name', 'daily_limit')
+    list_display = ('id', 'name', 'public_id', 'daily_limit')
     exclude = ['created_at']
