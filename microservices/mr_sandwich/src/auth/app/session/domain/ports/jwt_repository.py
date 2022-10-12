@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from app.ddd.repository import BaseRepository
+from app.shared import BaseRepository
 
 
 class JwtRepository(BaseRepository):

@@ -14,7 +14,7 @@ class _EventBus(Mediator):
         self._log(sender, event)
 
         if event == BusEvent.AUTHENTICATION_STARTED:
-            self.user_transceiver.on_authorization_started(data)
+            self.user_transceiver.on_authentication_started(data)
 
         if event == BusEvent.CREDENTIALS_CONFIRMED:
             username = data[0]

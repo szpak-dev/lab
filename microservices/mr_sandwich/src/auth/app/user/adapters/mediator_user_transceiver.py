@@ -9,7 +9,7 @@ class MediatorUserTransceiver(UserTransceiver, MediatorComponent):
         super().__init__(mediator)
         self._credentials_checker = credentials_checker
 
-    def on_authorization_started(self, data):
+    def on_authentication_started(self, data):
         username, password = data
         self._credentials_checker.check(username, password)
         self.emit_credentials_confirmed(username)

@@ -44,7 +44,6 @@ def create_app():
             view = {"id": user.id.id, "username": user.username.value}
             return make_response(view, 200)
         except (UserError, SessionError) as e:
-            print(e, flush=True)
             abort(401)
 
     @app.route('/', defaults={'path': ''})
@@ -52,7 +51,13 @@ def create_app():
     @app.route('/<path:path>')
     def proxy_pass(path):
         try:
-            return request_interceptor.pass_request(request)
+            res = request_interceptor.pass_request(request)
+            text, headers, status_code = res.text, dict(res.headers), res.status_code
+
+            flask_response = make_response(text, status_code, headers)
+            flask_response.headers = headers
+
+            return flask_response
         except SessionError:
             abort(401)
 

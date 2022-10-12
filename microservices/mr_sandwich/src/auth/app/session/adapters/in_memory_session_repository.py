@@ -1,6 +1,7 @@
 from app.session.domain.errors import SessionNotFound
-from app.session.domain.value_objects import SessionId, Session
+from app.session.domain.value_objects import SessionId
 from app.session.domain.ports.session_repository import SessionRepository
+from app.session.domain.entities.session import Session
 
 active_sessions = {}
 active_sessions_by_username = {}

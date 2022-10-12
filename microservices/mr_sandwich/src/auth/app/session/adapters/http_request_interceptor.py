@@ -1,8 +1,9 @@
-from flask import Request
+from flask import Request as FlaskRequest
+from requests import Response
 
-from app.session.adapters.http.request_identity_extractor import extract_identity
-from app.session.adapters.http.passable_request_factory import create_passable_request
-from app.session.adapters.http.request_passer import pass_request
+from app.session.domain.services.request_identity_extractor import extract_identity
+from app.session.domain.services.passable_request_factory import create_passable_request
+from app.session.domain.services.request_passer import pass_request
 from app.session.domain.ports.request_interceptor import RequestInterceptor
 from app.session.domain.ports.session_repository import SessionRepository
 from app.session.domain.ports.jwt_repository import JwtRepository
@@ -15,7 +16,7 @@ class HttpRequestInterceptor(RequestInterceptor):
         self._session_repository = session_repository
         self._jwt_repository = jwt_repository
 
-    def pass_request(self, flask_request: Request):
+    def pass_request(self, flask_request: FlaskRequest) -> Response:
         identity = extract_identity(flask_request)
         self._assert_valid_identity(identity)
 

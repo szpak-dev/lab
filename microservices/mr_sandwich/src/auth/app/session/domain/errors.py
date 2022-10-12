@@ -1,5 +1,4 @@
-from app.shared import docstring_message
-from app.ddd.domain import DomainError
+from app.shared import docstring_message, DomainError
 
 
 @docstring_message
@@ -9,7 +8,7 @@ class SessionError(DomainError):
 
 @docstring_message
 class IdentityNotFound(SessionError):
-    """Identity was not found within request"""
+    """Identity was not found within flask_request"""
 
 
 @docstring_message

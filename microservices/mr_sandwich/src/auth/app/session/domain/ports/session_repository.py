@@ -1,7 +1,8 @@
 from abc import abstractmethod
 
-from app.ddd.repository import BaseRepository
-from app.session.domain.value_objects import Session, SessionId
+from app.shared import BaseRepository
+from app.session.domain.value_objects import SessionId
+from app.session.domain.entities.session import Session
 
 
 class SessionRepository(BaseRepository):

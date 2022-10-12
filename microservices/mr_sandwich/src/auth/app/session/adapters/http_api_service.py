@@ -1,8 +1,9 @@
 from app.session.domain.ports.api_service import ApiService
 
-from app.session.domain.value_objects import Credentials, Session, SessionId
+from app.session.domain.value_objects import Credentials, SessionId
 from app.session.domain.ports.session_repository import SessionRepository
 from app.session.domain.ports.session_transceiver import SessionTransceiver
+from app.session.domain.entities.session import Session
 
 
 class HttpApiService(ApiService):
