@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, make_response
+from flask_app import Flask, request, abort, make_response
 
 
 def ok(data: str = ''):

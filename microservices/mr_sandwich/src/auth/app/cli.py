@@ -1,7 +1,7 @@
 import click
 from flask.cli import with_appcontext
 
-from app.user.adapters import user_creator
+from user.adapters import user_creator
 
 
 @click.command(name='add_user')

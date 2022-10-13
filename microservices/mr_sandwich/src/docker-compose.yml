@@ -10,7 +10,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "443:443/udp"
     volumes:
       - $PWD/load_balancer/Caddyfile:/etc/caddy/Caddyfile
 
@@ -18,23 +17,15 @@ services:
     container_name: microservices_mr_sandwich_auth
     networks:
       - microservices
-    expose:
-      - "5000"
     build:
       context: ./auth
-    volumes:
-      - ./auth:/opt
 
   food_factory:
     container_name: microservices_mr_sandwich_food_factory
     networks:
       - microservices
-    expose:
-      - "5000"
     build:
       context: ./food_factory
-    volumes:
-      - ./food_factory:/opt
 #
 #  web_store:
 #    container_name: microservices_mr_sandwich_web_store

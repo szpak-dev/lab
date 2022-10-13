@@ -1,12 +1,12 @@
 from flask import Flask, request, abort, make_response
 
-from app.session.domain.errors import SessionError
-from app.cli import add_user
-from app.session.adapters import api_service, request_interceptor
+from session.domain.errors import SessionError
+from session.adapters import api_service, request_interceptor
+from cli import add_user
 
 # tight coupling with user aggregate
-from app.user.adapters import user_repository
-from app.user.domain.errors import UserError
+from user.adapters import user_repository
+from user.domain.errors import UserError
 
 
 def create_app():

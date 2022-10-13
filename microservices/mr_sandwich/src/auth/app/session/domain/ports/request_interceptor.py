@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from flask import Request as FlaskRequest
+from flask_app import Request as FlaskRequest
 from requests import Response
 
 
