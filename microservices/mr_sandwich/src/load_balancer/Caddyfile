@@ -1,16 +1,15 @@
 {
-    log {
-        output stderr
-        level error
-    }
+        log {
+                output stderr
+                level debug
+        }
 }
 
-localhost {
-    reverse_proxy /auth/* microservices_mr_sandwich_auth:80 {
+mr_sandwich.localhost {
+        reverse_proxy /auth/* microservices_mr_sandwich_auth {
+        }
 
-    }
-
-    reverse_proxy /food_factory/* microservices_mr_sandwich_auth:80 {
-         header_up Host microservices_mr_sandwich_food_factory
-    }
+        reverse_proxy /food_factory/* microservices_mr_sandwich_auth {
+                header_up Host microservices_mr_sandwich_food_factory:80
+        }
 }

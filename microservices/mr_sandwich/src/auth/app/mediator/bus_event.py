@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from app.mediator import MediatorEvent
+from mediator import MediatorEvent
 
 
 class BusEvent(Enum):

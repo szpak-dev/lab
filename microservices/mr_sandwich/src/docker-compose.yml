@@ -2,16 +2,15 @@ version: '3.7'
 services:
 
   load_balancer:
-    image: caddy:2.6.1-alpine
-    restart: unless-stopped
     container_name: microservices_mr_sandwich_load_balancer
     networks:
       - microservices
+    build:
+      context: ./load_balancer
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - $PWD/load_balancer/Caddyfile:/etc/caddy/Caddyfile
+      - "443:443/udp"
 
   auth:
     container_name: microservices_mr_sandwich_auth
@@ -26,6 +25,10 @@ services:
       - microservices
     build:
       context: ./food_factory
+    environment:
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
 #
 #  web_store:
 #    container_name: microservices_mr_sandwich_web_store

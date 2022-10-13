@@ -18,6 +18,7 @@ def docstring_message(cls):
 
 
 def generate_number_base64(length: int = 32) -> str:
+    ascii_ranges = ((48, 57), (65, 90), (97, 122))
     chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/'
     steps = range(0, length)
 

@@ -1,12 +1,12 @@
 from flask import Flask, request, abort, make_response
 
-from session.domain.errors import SessionError
-from session.adapters import api_service, request_interceptor
+from sessions.domain.errors import SessionError
+from sessions.adapters import api_service, request_interceptor
 from cli import add_user
 
-# tight coupling with user aggregate
-from user.adapters import user_repository
-from user.domain.errors import UserError
+# tight coupling with users aggregate
+from users.adapters import user_repository
+from users.domain.errors import UserError
 
 
 def create_app():
@@ -52,6 +52,7 @@ def create_app():
     def proxy_pass(path):
         try:
             res = request_interceptor.pass_request(request)
+            print(res, flush=True)
             text, headers, status_code = res.text, dict(res.headers), res.status_code
 
             flask_response = make_response(text, status_code, headers)

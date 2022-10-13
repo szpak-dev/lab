@@ -1,9 +1,9 @@
 from typing import List
 
-from app.mediator import Mediator, MediatorComponent
-from app.mediator.bus_event import BusEvent
-from app.session.domain.ports.session_transceiver import SessionTransceiver
-from app.user.domain.ports.user_transceiver import UserTransceiver
+from mediator import Mediator, MediatorComponent
+from mediator.bus_event import BusEvent
+from sessions.domain.ports.session_transceiver import SessionTransceiver
+from users.domain.ports.user_transceiver import UserTransceiver
 
 
 class _EventBus(Mediator):
