@@ -37,7 +37,7 @@ def reserve_dish(dish_daily_availability: DishDailyAvailability, customer_id: in
     revision = dish_daily_availability.revision
 
     with transaction.atomic():
-        updated = DishDailyAvailability.objects.filter(pk=pk, day=day, revision=revision).update(
+        updated = DishDailyAvailability.objects.filter(pk=pk, day=day, available_count__gt=0, revision=revision).update(
             available_count=F('available_count')-1,
         )
 
