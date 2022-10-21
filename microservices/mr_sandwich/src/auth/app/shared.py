@@ -1,12 +1,14 @@
 import functools
-from abc import ABC
+import os
+from abc import ABC, abstractmethod
 from typing import List
 from random import randrange
+from kombu import Exchange, Queue, Connection
 
 
 def docstring_message(cls):
     """Decorates an exception to make its docstring its default message."""
-    # Must use cls_init name, not cls.__init__ itself, in closure to avoid recursion
+    # Must use cls_init full_name, not cls.__init__ itself, in closure to avoid recursion
     cls_init = cls.__init__
 
     @functools.wraps(cls.__init__)
@@ -34,22 +36,45 @@ class DomainError(Exception):
     pass
 
 
-class DomainEvent:
-    def __init__(self, name):
-        self.name = name
+class DomainEvent(ABC):
+    def __init__(self, full_name):
+        self._bc, self._aggregate, self._name = full_name.split('.')
+
+    def bounded_context(self) -> str:
+        return self._bc
+
+    def aggregate(self) -> str:
+        return self._aggregate
+
+    def name(self) -> str:
+        return self._name
+
+    @abstractmethod
+    def serialize(self) -> str:
+        pass
 
 
 class AggregateRoot:
     def __init__(self):
         self._events: List[DomainEvent] = []
 
-    def emit_event(self, event: DomainEvent) -> None:
+    def _emit_event(self, event: DomainEvent) -> None:
         self._events.append(event)
 
     def release_events(self) -> List[DomainEvent]:
         events = self._events
         self._events = []
         return events
+
+
+def emit_events(domain_events: List[DomainEvent]) -> None:
+    with Connection(os.getenv('RABBITMQ_DSN')) as connection:
+        producer = connection.Producer()
+        for event in domain_events:
+            print(event.bounded_context(), event.aggregate(), event.name(), flush=True)
+            exchange = Exchange(event.bounded_context(), 'direct', durable=True)
+            queue = Queue(event.aggregate(), exchange=exchange, routing_key=event.name())
+            producer.publish(event.serialize(), exchange=exchange, routing_key=event.name(), declare=[queue])
 
 
 class BaseRepository(ABC):

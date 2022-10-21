@@ -11,7 +11,7 @@ class PlainPassword:
     value: str
 
     def encode(self) -> Password:
-        return Password('hashed-encoded')
+        return Password('password')
 
 
 @dataclass

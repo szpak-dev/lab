@@ -19,6 +19,14 @@ services:
     build:
       context: ./auth
 
+  auth_worker:
+    container_name: microservices_mr_sandwich_auth_worker
+    networks:
+      - microservices
+    build:
+      context: ./auth
+      dockerfile: worker.Dockerfile
+
   food_factory:
     container_name: microservices_mr_sandwich_food_factory
     networks:
@@ -29,7 +37,14 @@ services:
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_EMAIL=admin@example.com
-#
+
+  rabbitmq:
+    image: rabbitmq:3.11.2-management
+    container_name: microservices_mr_sandwich_rabbitmq
+    networks:
+      - microservices
+
+
 #  web_store:
 #    container_name: microservices_mr_sandwich_web_store
 #    build:

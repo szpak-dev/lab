@@ -13,10 +13,13 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.cli.add_command(add_user)
 
-    @app.route('/auth/login')
+    @app.route('/auth/login', methods=['POST'])
     def login():
         try:
-            session = api_service.create_session('admin_user', 'password')
+            session = api_service.create_session(
+                request.form.get('username'),
+                request.form.get('password'),
+            )
 
             response = make_response('', 201)
             response.set_cookie('session_id', session.raw_id())
@@ -41,9 +44,8 @@ def create_app():
             username = api_service.get_current_username(request.cookies.get('session_id'))
             user = user_repository.get_by_username(username)
 
-            view = {"id": user.id.id, "username": user.username.value}
-            return make_response(view, 200)
-        except (UserError, SessionError) as e:
+            return make_response(user.serialize(), 200)
+        except (UserError, SessionError):
             abort(401)
 
     @app.route('/', defaults={'path': ''})

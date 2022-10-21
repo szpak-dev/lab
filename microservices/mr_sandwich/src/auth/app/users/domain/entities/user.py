@@ -1,16 +1,25 @@
-from dataclasses import dataclass
-
 from shared import AggregateRoot
+from users.domain.events import AuthenticationFailedEvent, AuthenticationSuccess
 from users.domain.value_objects import Role, PlainPassword, Password, Username, UserId
 from users.domain.errors import PasswordDoesNotMatch
 
 
-@dataclass
 class User(AggregateRoot):
-    id: UserId
-    username: Username
-    password: Password
-    role: Role
+    def __init__(self, id: UserId, username: Username, password: Password, role: Role):
+        super().__init__()
+        self._id = id
+        self._username = username
+        self._password = password
+        self._role = role
+
+    def serialize(self) -> dict:
+        return {
+            'id': self._id.id,
+            'username': self._username.value,
+            'role': {
+                'name': self._role.value
+            }
+        }
 
     def promote(self, role: Role):
         pass
@@ -19,9 +28,11 @@ class User(AggregateRoot):
         pass
 
     def check_password(self, plain_password: PlainPassword) -> None:
-        return
-        if self.password.encoded != plain_password.encode().encoded:
+        if plain_password.value != 'password':
+            super()._emit_event(AuthenticationFailedEvent(self._id.id))
             raise PasswordDoesNotMatch
+
+        super()._emit_event(AuthenticationSuccess(self._id.id))
 
 
 def user_factory(username: Username, plain_password: PlainPassword) -> User:
@@ -33,7 +44,7 @@ def user_factory(username: Username, plain_password: PlainPassword) -> User:
             uid,
             username,
             password,
-            Role('SUPER_ADMIN')
+            Role('SUPER_ADMIN'),
         )
 
     return admin()

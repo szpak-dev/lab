@@ -16,8 +16,12 @@ class InMemoryUserRepository(UserRepository):
         if not users.get(username):
             raise UserNotFound
 
-        return User(UserId('id'), Username(username), Password('p'), Role('r'))
+        return User(
+            UserId('id'),
+            Username(username),
+            Password('password'),
+            Role('r')
+        )
 
     def save(self, user: User) -> None:
         pass
-    

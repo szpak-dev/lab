@@ -3,6 +3,11 @@ rba:
 	docker-compose up -d auth && \
 	docker-compose logs --follow auth
 
+rbaw:
+	docker-compose build --no-cache auth_worker && \
+	docker-compose up -d auth_worker && \
+	docker-compose logs --follow auth_worker
+
 rbf:
 	docker-compose build --no-cache food_factory && \
 	docker-compose up -d food_factory && \
