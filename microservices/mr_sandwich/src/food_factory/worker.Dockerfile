@@ -10,6 +10,6 @@ RUN pip install -r requirements.txt && \
     rm -rf /var/lib/apt/lists/*
 
 ENV POSTGRES_DSN=postgres://user:password@${SERVICE_HOSTNAME}_postgres:5432/default
-ENV RABBITMQ_DSN=rabbitmq://user:password@${SERVICE_HOSTNAME}_rabbitmq:15672/vhost
+ENV RABBITMQ_DSN=amqp://guest:guest@microservices_mr_sandwich_rabbitmq//
 ENV LOG_LEVEL=debug
 

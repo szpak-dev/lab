@@ -1,0 +1,154 @@
+openapi: "3.0.2"
+
+
+info:
+  title: Cart API for Mr. Sandwich
+  version: "1.0.0"
+
+
+servers:
+  - url: https://localhost/web_store_cart
+
+
+tags:
+  - name: Cart
+    description: Cart for Web Store
+  - name: Cart Product
+    description: Representation of Product in Cart
+  - name: Product
+    description: Dish details obtained from Food Factory
+
+
+paths:
+  /carts:
+    summary: Manage logged in User's Cart
+    get:
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: Get current User's Cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '404':
+          description: No active Cart exists
+    post:
+      tags:
+        - Cart
+      responses:
+        '201':
+          description: New cart was created, use get method to obtain
+        '409':
+          description: Active Card already exists
+    delete:
+      tags:
+        - Cart
+      responses:
+        '204':
+          description: Cart was cleared, obtain using GET method
+
+  /carts/cart-products:
+    summary: Add Product to Cart
+    post:
+      tags:
+        - Cart Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCartProduct'
+      responses:
+        '201':
+          description: Product was added to the Cart
+        '409':
+          description: Product could not be added to the Cart, probably all reserved
+
+  /carts/cart-products/{cartProductId}:
+    summary: Remove Product from Cart
+    delete:
+      tags:
+        - Cart Product
+      responses:
+        '204':
+          description: Product was removed from the Cart
+        '404':
+          description: Product was not found in the Cart
+
+  /products/{productId}:
+    summary: Get Product details from Food Factory
+    get:
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product was not found
+
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        total_price:
+          type: float
+          example: 45.98
+        cart_products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartProduct'
+
+    CartProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        name:
+          type: string
+          example: Bottle of water
+        price:
+          type: object
+          properties:
+            value:
+              type: float
+              example: 3.45
+            currency:
+              type: string
+              example: GBP
+
+    NewCartProduct:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          example: 543
+
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Big Bag Of Fishsticks
+        image_url:
+          type: string
+          example: https://image.com
+        price:
+          type: float
+          example: 23.78
+        description:
+          type: string
+          example: Do you like to put them in your mouth?
+        nutrition_facts:
+          type: string
+          example: 'gives energy, takes away health'

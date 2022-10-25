@@ -12,4 +12,8 @@ mr_sandwich.localhost {
         reverse_proxy /food_factory/* microservices_mr_sandwich_auth {
                 header_up Host microservices_mr_sandwich_food_factory:80
         }
+
+        reverse_proxy /web_store_cart/* microservices_mr_sandwich_web_store_cart {
+                header_up Host microservices_mr_sandwich_web_store_cart:80
+        }
 }

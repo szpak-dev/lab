@@ -1,9 +1,9 @@
 import functools
-import os
+from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from typing import List
 from random import randrange
-from kombu import Exchange, Queue, Connection
+# from kombu import Exchange, Queue, Connection
 
 
 def docstring_message(cls):
@@ -67,14 +67,26 @@ class AggregateRoot:
         return events
 
 
-def emit_events(domain_events: List[DomainEvent]) -> None:
-    with Connection(os.getenv('RABBITMQ_DSN')) as connection:
-        producer = connection.Producer()
-        for event in domain_events:
-            exchange = Exchange(event.bounded_context(), 'direct', durable=True)
-            queue = Queue(event.aggregate(), exchange=exchange, routing_key=event.name())
-            producer.publish(event.serialize(), exchange=exchange, routing_key=event.name(), declare=[queue])
+# def emit_events(domain_events: List[DomainEvent]) -> None:
+#     with Connection(os.getenv('RABBITMQ_DSN')) as connection:
+#         producer = connection.Producer()
+#         for event in domain_events:
+#             exchange = Exchange(event.bounded_context(), 'direct', durable=True)
+#             queue = Queue(event.aggregate(), exchange=exchange, routing_key=event.name())
+#             producer.publish(event.serialize(), exchange=exchange, routing_key=event.name(), declare=[queue])
 
 
 class BaseRepository(ABC):
     pass
+
+
+class ValueObject(ABC):
+    @abstractmethod
+    def value(self):
+        pass
+
+
+@dataclass(frozen=True)
+class Money:
+    value: float
+    currency: str

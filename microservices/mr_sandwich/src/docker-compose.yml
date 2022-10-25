@@ -45,12 +45,12 @@ services:
       - microservices
 
 
-#  web_store:
-#    container_name: microservices_mr_sandwich_web_store
-#    build:
-#      context: ./web_store
-#    volumes:
-#      - ./:/opt
+  web_store_cart:
+    container_name: microservices_mr_sandwich_web_store_cart
+    networks:
+      - microservices
+    build:
+      context: ./web_store_cart
 #
 #  delivery:
 #    container_name: microservices_mr_sandwich_delivery

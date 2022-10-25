@@ -1,4 +1,4 @@
-FROM python:3.10.7-slim
+FROM python:3.10.8-slim
 
 WORKDIR /opt/app
 ADD ./app/ .
@@ -12,7 +12,7 @@ RUN apt-get -qq update && \
     apt-get -qq remove --purge --auto-remove --yes && \
     rm -rf /var/lib/apt/lists/*
 
-ENV SERVICE_HOSTNAME=mircroservices_mr_sandwich_food_factory
+ENV SERVICE_HOSTNAME=mircroservices_mr_sandwich_web_store
 ENV POSTGRES_DSN=postgres://user:password@${SERVICE_HOSTNAME}_postgres:5432/default
 ENV RABBITMQ_DSN=amqp://guest:guest@microservices_mr_sandwich_rabbitmq//
 ENV PYTHONDONTWRITEBYTECODE 1
