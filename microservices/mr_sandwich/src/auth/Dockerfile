@@ -14,7 +14,7 @@ RUN apt-get -qq update && \
 
 ENV POSTGRES_DSN=postgres://user:password@${SERVICE_HOSTNAME}_postgres:5432/default
 ENV RABBITMQ_DSN=amqp://guest:guest@microservices_mr_sandwich_rabbitmq//
-ENV LOG_LEVEL=debug
+ENV LOG_LEVEL=info
 
 CMD [ "mod_wsgi-express", "start-server", "wsgi.py", \
     "--port", "80", \

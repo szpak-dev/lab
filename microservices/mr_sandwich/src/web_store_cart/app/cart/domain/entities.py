@@ -18,7 +18,7 @@ class Cart(Base, AggregateRoot):
     total_price = Column(Float)
     created_at = Column(DateTime, default=datetime.now)
 
-    def add_product(self, product_id: str, name: str, price: Money) -> None:
+    def add_product(self, product_id: int, name: str, price: Money) -> None:
         self._emit_event(ProductAddedToCart())
 
     def remove_product(self, cart_product_id: CartProductId):

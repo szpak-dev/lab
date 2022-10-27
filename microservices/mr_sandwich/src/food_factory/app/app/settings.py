@@ -15,8 +15,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-3v1&&ph*v@a@n4=!_%q
 DEBUG = os.getenv('DJANGO_DEBUG', True)
 
 ALLOWED_HOSTS = [
-    'mr_sandwich.localhost',
-    'microservices_mr_sandwich_food_factory',
+    'food_factory',
+    '127.0.0.1',
+    'localhost',
 ]
 
 # Application definition
@@ -29,6 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'mod_wsgi.server',
 ]
 
 MIDDLEWARE = [

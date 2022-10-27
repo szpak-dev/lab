@@ -3,8 +3,9 @@ services:
 
   load_balancer:
     container_name: microservices_mr_sandwich_load_balancer
+    hostname: load_balancer
     networks:
-      - microservices
+      - microservices_mr_sandwich
     build:
       context: ./load_balancer
     ports:
@@ -14,23 +15,25 @@ services:
 
   auth:
     container_name: microservices_mr_sandwich_auth
+    hostname: auth
     networks:
-      - microservices
+      - microservices_mr_sandwich
     build:
       context: ./auth
 
   auth_worker:
     container_name: microservices_mr_sandwich_auth_worker
     networks:
-      - microservices
+      - microservices_mr_sandwich
     build:
       context: ./auth
       dockerfile: worker.Dockerfile
 
   food_factory:
     container_name: microservices_mr_sandwich_food_factory
+    hostname: food_factory
     networks:
-      - microservices
+      - microservices_mr_sandwich
     build:
       context: ./food_factory
     environment:
@@ -40,15 +43,16 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.11.2-management
+    hostname: rabbitmq
     container_name: microservices_mr_sandwich_rabbitmq
     networks:
-      - microservices
-
+      - microservices_mr_sandwich
 
   web_store_cart:
     container_name: microservices_mr_sandwich_web_store_cart
+    hostname: web_store_cart
     networks:
-      - microservices
+      - microservices_mr_sandwich
     build:
       context: ./web_store_cart
 #
@@ -59,5 +63,5 @@ services:
 #    volumes:
 #      - ./:/opt
 networks:
-  microservices:
-    name: microservices
+  microservices_mr_sandwich:
+    name: microservices_mr_sandwich

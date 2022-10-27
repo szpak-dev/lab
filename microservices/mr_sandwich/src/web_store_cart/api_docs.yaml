@@ -70,6 +70,14 @@ paths:
     delete:
       tags:
         - Cart Product
+      parameters:
+        - name: cartProductId
+          in: path
+          description: Id of the Cart Product to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '204':
           description: Product was removed from the Cart
@@ -81,6 +89,14 @@ paths:
     get:
       tags:
         - Product
+      parameters:
+        - name: productId
+          in: path
+          description: Id of the Product to be fetched
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: Product details

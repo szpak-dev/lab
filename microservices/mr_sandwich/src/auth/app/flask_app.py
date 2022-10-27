@@ -8,6 +8,8 @@ from cli import add_user
 from users.adapters import user_repository
 from users.domain.errors import UserError
 
+allowed_http_methods = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE']
+
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -48,13 +50,13 @@ def create_app():
         except (UserError, SessionError):
             abort(401)
 
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<string:path>')
-    @app.route('/<path:path>')
+    @app.route('/<string:path>', defaults={'path': ''}, methods=allowed_http_methods)
+    @app.route('/<string:path>', methods=allowed_http_methods)
+    @app.route('/<path:path>', methods=allowed_http_methods)
     def proxy_pass(path):
+        app.logger.info(request)
         try:
             res = request_interceptor.pass_request(request)
-            print(res, flush=True)
             text, headers, status_code = res.text, dict(res.headers), res.status_code
 
             flask_response = make_response(text, status_code, headers)

@@ -1,0 +1,113 @@
+openapi: "3.0.2"
+
+
+info:
+  title: Food Factory API for Mr. Sandwich
+  version: "1.0.0"
+
+
+servers:
+  - url: https://localhost/web_store_cart
+
+
+tags:
+  - name: Reservation
+    description: Since production has its limits, Dishes must be reserved before buying.
+
+
+paths:
+  /dishes/{dishId}/reservations:
+    summary: Manage Reservation of Dishes
+    get:
+      tags:
+        - Reservation
+      parameters:
+        - name: dishId
+          in: path
+          description: Id of the Dish
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: customer_id
+          in: query
+          description: Customer Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Get current Customer Reservation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        '404':
+          description: No Reservation for this User
+    post:
+      tags:
+        - Reservation
+      parameters:
+        - name: dishId
+          in: path
+          description: Id of the Dish
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: New Reservation was created, use get method to obtain
+        '404':
+          description: Dish was not found
+        '409':
+          description: Reservation data became obsolete, retry
+        '422':
+          description: Dish is unavailable, all available are reserved
+    delete:
+      tags:
+        - Reservation
+      parameters:
+        - name: dishId
+          in: path
+          description: Id of the Dish
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: customer_id
+          in: query
+          description: Customer Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Reservation was deleted, reserved Dish is available again
+        '404':
+          description: No Reservation was found
+
+
+components:
+  schemas:
+    Reservation:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+
+    Customer:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+          example: 123

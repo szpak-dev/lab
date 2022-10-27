@@ -11,8 +11,6 @@ class _EventBus(Mediator):
     user_transceiver: UserTransceiver = None
 
     def notify(self, sender: MediatorComponent, event: str, data: List = []) -> None:
-        self._log(sender, event)
-
         if event == BusEvent.AUTHENTICATION_STARTED:
             self.user_transceiver.on_authentication_started(data)
 
@@ -22,11 +20,6 @@ class _EventBus(Mediator):
 
         if event == BusEvent.AUTHENTICATION_SUCCESSFUL:
             pass
-
-    @staticmethod
-    def _log(sender: MediatorComponent, event: str):
-        sender_class = sender.__class__.__name__
-        print('[EventBus] {}, {}'.format(sender_class, event), flush=True)
 
 
 event_bus = _EventBus()

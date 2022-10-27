@@ -6,14 +6,14 @@
 }
 
 mr_sandwich.localhost {
-        reverse_proxy /auth/* microservices_mr_sandwich_auth {
+        reverse_proxy /auth/* auth:80 {
         }
 
-        reverse_proxy /food_factory/* microservices_mr_sandwich_auth {
-                header_up Host microservices_mr_sandwich_food_factory:80
+        reverse_proxy /food_factory/* auth:80 {
+                header_up Host food_factory:80
         }
 
-        reverse_proxy /web_store_cart/* microservices_mr_sandwich_web_store_cart {
-                header_up Host microservices_mr_sandwich_web_store_cart:80
+        reverse_proxy /web_store_cart/* auth:80 {
+                header_up Host web_store_cart:80
         }
 }
