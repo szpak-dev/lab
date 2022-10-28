@@ -1,4 +1,11 @@
-FROM python:3.10.7-slim
+FROM python:3.10.8-slim
+
+ENV LC_ALL=C.UTF-8
+ENV LC_CTYPE=C.UTF-8
+ENV WSGI_LOG_LEVEL=error
+ENV FLASK_LOG_LEVEL=WARNING
+ENV DATABASE_DSN=postgres://postgres:postgres@default:5432/db
+ENV RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
 WORKDIR /opt/app
 ADD ./app/ .
@@ -12,14 +19,11 @@ RUN apt-get -qq update && \
     apt-get -qq remove --purge --auto-remove --yes && \
     rm -rf /var/lib/apt/lists/*
 
-ENV POSTGRES_DSN=postgres://user:password@${SERVICE_HOSTNAME}_postgres:5432/default
-ENV RABBITMQ_DSN=amqp://guest:guest@microservices_mr_sandwich_rabbitmq//
-ENV LOG_LEVEL=info
-
 CMD [ "mod_wsgi-express", "start-server", "wsgi.py", \
     "--port", "80", \
     "--user", "www-data", \
     "--group", "www-data", \
-    "--log-level", "$LOG_LEVEL", \
+    "--log-level", "$WSGI_LOG_LEVEL", \
+    "--error-log-format", "[%t] %M", \
     "--log-to-terminal" \
 ]

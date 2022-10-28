@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, make_response
 
+from logger import logging
 from sessions.domain.errors import SessionError
 from sessions.adapters import api_service, request_interceptor
 from cli import add_user
@@ -54,9 +55,10 @@ def create_app():
     @app.route('/<string:path>', methods=allowed_http_methods)
     @app.route('/<path:path>', methods=allowed_http_methods)
     def proxy_pass(path):
-        app.logger.info(request)
+
         try:
             res = request_interceptor.pass_request(request)
+            _log_proxy_pass(request, res)
             text, headers, status_code = res.text, dict(res.headers), res.status_code
 
             flask_response = make_response(text, status_code, headers)
@@ -65,5 +67,8 @@ def create_app():
             return flask_response
         except SessionError:
             abort(401)
+
+    def _log_proxy_pass(req, res):
+        logging.info('[ProxyPass] {} > {}'.format(req.path, res.status_code))
 
     return app

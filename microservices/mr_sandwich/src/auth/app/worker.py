@@ -1,13 +1,12 @@
 import os
-import logging
-import sys
 from kombu import Connection, Exchange, Queue
+
+from logger import logging
 
 auth_exchange = Exchange('auth', 'direct', durable=True)
 auth_failed_queue = Queue('user', exchange=auth_exchange, key='authentication_failed')
 auth_success_queue = Queue('user', exchange=auth_exchange, key='authentication_success')
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.info('Connecting with Rabbit: {}'.format(os.getenv('RABBITMQ_DSN')))
 connection = Connection(os.getenv('RABBITMQ_DSN'))
 

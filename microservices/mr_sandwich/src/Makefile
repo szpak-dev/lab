@@ -1,22 +1,22 @@
+rb:
+	docker-compose build --no-cache $(s) && \
+	docker-compose up -d $(s) && \
+	docker-compose logs --follow $(s)
+
 rba:
-	docker-compose build --no-cache auth && \
-	docker-compose up -d auth && \
-	docker-compose logs --follow auth
+	@make s=auth
 
 rbaw:
-	docker-compose build --no-cache auth_worker && \
-	docker-compose up -d auth_worker && \
-	docker-compose logs --follow auth_worker
+	@make s=auth_worker
 
 rbf:
-	docker-compose build --no-cache food_factory && \
-	docker-compose up -d food_factory && \
-	docker-compose logs --follow food_factory
+	@make s=food_factory
+
+rbfw:
+	@make s=food_factory_worker
 
 rbl:
-	docker-compose build --no-cache load_balancer && \
-	docker-compose up -d load_balancer && \
-	docker-compose logs --follow load_balancer
+	@make s=load_balancer
 
 ps:
 	docker-compose ps
@@ -27,5 +27,12 @@ im:
 l:
 	docker-compose logs --follow
 
-r:
+ll:
+	docker-compose logs --follow $(s)
+
+rall:
 	docker-compose restart && docker-compose logs --follow
+
+r:
+	docker-compose up -d $(s)
+	@make ll $(s)

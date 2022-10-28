@@ -1,5 +1,10 @@
 FROM python:3.10.8-slim
 
+ENV WSGI_LOG_LEVEL='error'
+ENV FASTAPI_LOG_LEVEL='WARNING'
+ENV DATABASE_DSN='postgres://postgres:postgres@default:5432/db'
+ENV RABBITMQ_DSN='amqp://guest:guest@rabbitmq//'
+
 WORKDIR /opt/app
 ADD ./app/ .
 
@@ -12,17 +17,10 @@ RUN apt-get -qq update && \
     apt-get -qq remove --purge --auto-remove --yes && \
     rm -rf /var/lib/apt/lists/*
 
-ENV SERVICE_HOSTNAME=mircroservices_mr_sandwich_web_store
-ENV POSTGRES_DSN=postgres://user:password@${SERVICE_HOSTNAME}_postgres:5432/default
-ENV RABBITMQ_DSN=amqp://guest:guest@microservices_mr_sandwich_rabbitmq//
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV LOG_LEVEL=debug
-
 CMD [ "mod_wsgi-express", "start-server", "app/wsgi.py", \
     "--port", "80", \
     "--user", "www-data", \
     "--group", "www-data", \
-    "--log-level", "$LOG_LEVEL", \
+    "--log-level", "$WSGI_LOG_LEVEL", \
     "--log-to-terminal" \
 ]

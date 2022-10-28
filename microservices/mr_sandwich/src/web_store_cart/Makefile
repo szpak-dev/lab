@@ -6,4 +6,4 @@ fr:
 	pip freeze > app/requirements.txt
 
 exec:
-	docker exec -it microservices_mr_sandwich_web_store_cart sh
+	docker exec -it microservices_mr_sandwich_web_store_cart bash
