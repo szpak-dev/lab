@@ -37,6 +37,3 @@ class CartProduct(Base):
     product_name = Column(String)
     price = Column(Float)
     created_at = Column(DateTime, default=datetime.now)
-
-
-

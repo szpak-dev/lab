@@ -3,20 +3,23 @@ rb:
 	docker-compose up -d $(s) && \
 	docker-compose logs --follow $(s)
 
-rba:
-	@make s=auth
+rbauth:
+	@make rb s=auth
 
-rbaw:
-	@make s=auth_worker
+rbauthw:
+	@make rb s=auth_worker
 
-rbf:
-	@make s=food_factory
+rbfoodfactory:
+	@make rb s=food_factory
 
-rbfw:
-	@make s=food_factory_worker
+rbfoodfactoryw:
+	@make rb s=food_factory_worker
 
-rbl:
-	@make s=load_balancer
+rbloadbalancer:
+	@make rb s=load_balancer
+
+rbwebstorecart:
+	@make rb s=web_store_cart
 
 ps:
 	docker-compose ps
@@ -25,14 +28,8 @@ im:
 	docker-compose images
 
 l:
-	docker-compose logs --follow
-
-ll:
 	docker-compose logs --follow $(s)
 
-rall:
-	docker-compose restart && docker-compose logs --follow
-
-r:
+rr:
 	docker-compose up -d $(s)
-	@make ll $(s)
+	@make l $(s)

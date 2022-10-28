@@ -3,19 +3,20 @@ from cart.application.add_product_to_cart import AddProductToCartCommand
 from cart.application.clear_cart import ClearCartCommand
 from cart.application.create_cart import CreateCartCommand
 from cart.application.remove_product_from_cart import RemoveProductFromCartCommand
+from cart.domain.entities import Cart
 from cart.domain.value_objects import CustomerId, CartId, CartProductId
 from cart.infrastructure.in_memory_cart_repository import repository
 
 
-def get_active_cart(customer_id: int):
-    cart = repository.get_active_for_customer(CustomerId(customer_id))
+def get_active_cart(customer_id: int) -> Cart:
+    return repository.get_active_for_customer(CustomerId(customer_id))
 
 
-def create_cart(customer_id: int):
+def create_cart(customer_id: int) -> None:
     command_bus.execute(CreateCartCommand(CustomerId(customer_id)))
 
 
-def add_product_to_cart(cart_id: int, customer_id: int, product_id: int):
+def add_product_to_cart(cart_id: int, customer_id: int, product_id: int) -> None:
     command_bus.execute(AddProductToCartCommand(
         CartId(cart_id),
         CustomerId(customer_id),
@@ -23,7 +24,7 @@ def add_product_to_cart(cart_id: int, customer_id: int, product_id: int):
     ))
 
 
-def remove_product_from_cart(cart_id: int, customer_id: int, cart_product_id: int):
+def remove_product_from_cart(cart_id: int, customer_id: int, cart_product_id: int) -> None:
     command_bus.execute(RemoveProductFromCartCommand(
         CartId(cart_id),
         CustomerId(customer_id),
@@ -31,7 +32,7 @@ def remove_product_from_cart(cart_id: int, customer_id: int, cart_product_id: in
     ))
 
 
-def clear_cart(cart_id: int, customer_id: int):
+def clear_cart(cart_id: int, customer_id: int) -> None:
     command_bus.execute(ClearCartCommand(
         CartId(cart_id),
         CustomerId(customer_id),

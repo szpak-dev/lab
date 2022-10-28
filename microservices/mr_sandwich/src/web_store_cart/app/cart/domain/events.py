@@ -31,4 +31,3 @@ class ProductRemovedFromCart(DomainEvent):
 
     def serialize(self) -> str:
         pass
-

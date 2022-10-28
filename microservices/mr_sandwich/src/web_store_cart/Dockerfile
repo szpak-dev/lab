@@ -1,9 +1,11 @@
 FROM python:3.10.8-slim
 
-ENV WSGI_LOG_LEVEL='error'
-ENV FASTAPI_LOG_LEVEL='WARNING'
-ENV DATABASE_DSN='postgres://postgres:postgres@default:5432/db'
-ENV RABBITMQ_DSN='amqp://guest:guest@rabbitmq//'
+ENV LC_ALL=C.UTF-8
+ENV LC_CTYPE=C.UTF-8
+ENV WSGI_LOG_LEVEL=error
+ENV FASTAPI_LOG_LEVEL=WARNING
+ENV DATABASE_DSN=postgres://postgres:postgres@default:5432/db
+ENV RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
 WORKDIR /opt/app
 ADD ./app/ .
@@ -22,5 +24,6 @@ CMD [ "mod_wsgi-express", "start-server", "app/wsgi.py", \
     "--user", "www-data", \
     "--group", "www-data", \
     "--log-level", "$WSGI_LOG_LEVEL", \
+    "--error-log-format", "[%t] %M", \
     "--log-to-terminal" \
 ]

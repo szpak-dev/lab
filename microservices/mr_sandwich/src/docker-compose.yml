@@ -12,6 +12,9 @@ services:
       - "80:80"
       - "443:443"
       - "443:443/udp"
+    environment:
+      - DOMAIN=mr_sandwich.localhost
+      - LOG_LEVEL=warn
 
   auth:
     container_name: microservices_mr_sandwich_auth
@@ -36,7 +39,7 @@ services:
       context: ./auth
       dockerfile: worker.Dockerfile
     environment:
-      - LOG_LEVEL=warn
+      - LOG_LEVEL=WARNING
       - DATABASE_DSN=postgres://postgres:postgres@auth_db:5432/auth
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
@@ -97,6 +100,20 @@ services:
       - DATABASE_DSN=postgres://postgres:postgres@web_store_cart_db:5432/web_store_cart
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
+  web_store_cart_db:
+    image: postgres:14.4-alpine
+    container_name: microservices_mr_sandwich_web_store_cart_db
+    hostname: web_store_cart_db
+    networks:
+      - microservices_mr_sandwich
+    ports:
+      - "5435:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=web_store_cart
+
   rabbitmq:
     image: rabbitmq:3.11.2-management
     container_name: microservices_mr_sandwich_rabbitmq
@@ -104,17 +121,17 @@ services:
     networks:
       - microservices_mr_sandwich
 
-  central_log:
-    image: rsyslog/syslog_appliance_alpine
-    container_name: microservices_mr_sandwich_central_log
-    hostname: central_log
-    networks:
-      - microservices_mr_sandwich
-    volumes:
-      - central_logs:/logs
-    environment:
-      - TZ=Europe/Warsaw
-      - FWD_TO_HOST=central_log
+#  central_log:
+#    image: rsyslog/syslog_appliance_alpine
+#    container_name: microservices_mr_sandwich_central_log
+#    hostname: central_log
+#    networks:
+#      - microservices_mr_sandwich
+#    volumes:
+#      - central_logs:/logs
+#    environment:
+#      - TZ=Europe/Warsaw
+#      - FWD_TO_HOST=central_log
 
 
 networks:

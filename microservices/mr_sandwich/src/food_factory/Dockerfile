@@ -24,5 +24,6 @@ CMD [ "python", "manage.py", "runmodwsgi", \
     "--user=www-data", \
     "--group=www-data", \
     "--log-level=${WSGI_LOG_LEVEL}", \
+    "--error-log-format='[%t] %M'", \
     "--log-to-terminal" \
 ]

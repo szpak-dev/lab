@@ -1,11 +1,11 @@
 {
         log {
-                output stderr
-                level debug
+                output stdout
+                level {$LOG_LEVEL}
         }
 }
 
-mr_sandwich.localhost {
+{$DOMAIN:localhost} {
         reverse_proxy /auth/* auth:80 {
         }
 
