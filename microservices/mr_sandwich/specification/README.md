@@ -1,5 +1,5 @@
 # System Documentation
-There are three types of documentation included in the specification:
+There are two types of documentation included in the specification:
 
 * adr - Architecture Decision Records, files containing explanations about the architecture, read more about in the 
 [dedicated article](https://www.szpak.dev/blog/architecture/adr)

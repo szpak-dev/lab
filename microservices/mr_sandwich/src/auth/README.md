@@ -35,32 +35,11 @@ If you take a closer look on the files and directories, this is what you will se
   * contains two Aggregates: `Session` and `User`
   * Aggregates use Event Bus build on Mediator pattern to communicate
   * there are some DDD common components like `Repository`, `AggregateRoot` or `DomainEvent`
-* .dockeignore
-  * keeps your local venv directory out of production build
-* .env
-  * sets names for docker-compose, thanks to this you have nicely formatted service names in log
-  * keeps some instance-specific values, they need to be reflected in your cloud environment like AWS -> Systems Manager
-* .gitignore
-  * all build and cache-related artifacts should stay on your local machine
-  * you can modify it as you need
-* connect.sh
-  * convenient way to enter app container
-* Dockerfile
-  * contains build instructions for a container
-  * uses specific python version, so there is no need for `virtual_env`
-  * defining entrypoint in a separated file gives us change to run some operations when service starts
-* entrypoint.sh
-  * responsible for running flask application
-  * may orchestrate some additional tasks when service starts
-* requirements.txt
-  * freezed pip packages
-  * every package is locked on exact semver, so no surprises when new production build is deployed
-* venv.sh
-  * handy script for local development
-  * activates `virtual_env`
+
+The remaining files are described in the Lab's README.md file.
 
 ## Aggregates
-As it was already said, Authentication (Auth in short) Bounded Context contains two Aggregates: User and Session. Every 
+As already said, Authentication (Auth in short) Bounded Context contains two Aggregates: User and Session. Every 
 Aggregate includes two directories: `domain` and `adapters`, which are mandatory minimum. Let's see what they consist:
 
 * `domain/ports`: 
@@ -79,7 +58,6 @@ Aggregate includes two directories: `domain` and `adapters`, which are mandatory
   * **DDD** services, 
   * they are responsible for validating **business rules**
   * they don't rely on adapters
-  * mostly pure functions
 
 * `domain/errors.py`: 
   * taxonomy of Domain Events, 
@@ -134,7 +112,7 @@ Built around `Session`, which doesn't do much. But what are the ports?
   * listen for confirmed credentials from User Aggregate
 
 ## Summary
-In this service, I have used **Ports And Adapters** architecture. It gave us a holy grail of a good software project,
+In this service, I have used **Ports And Adapters** architecture. It gave us a holy grail of a good software project:
 **loose coupling** and **high cohesion**. User and Session does not rely on each other anywhere, they are totally 
-independent. They only place containing tight coupling is the `flask` factory method where controllers live. Mediator
+independent. They only place containing tight coupling is the `Flask` factory method where controllers live. Mediator
 components do not use object but primitive values, so they can be kept separated.

@@ -1,13 +1,17 @@
-# SQL Database Lab (PostgreSQL 14.4)
-Hello and welcome to the Database SQL lab. You should treat this as a **hands-on** experience when going through
-**Databases (SQL)** tutorial available on [Information Technology](https://szpak.dev/tutorials#sql)
+# Database SQL (PostgreSQL 14.4)
+Hello and welcome to the Database SQL project. You should treat this as a **hands-on** experience when going through
+**Databases (SQL)** tutorial available on [Information Technology](https://szpak.dev/tutorials#sql).
 
 # Before You Start
-This Laboratory was made with a [Docker](https://www.docker.com/get-started/), great tool for containerizing 
-applications. In this case there are two apps included:
+There are two containers available in this project:
 
-* **PostgreSQL** - version 14.4
-* **app** - application written especially for this tutorial in Python, to make everything easier for you
+* **PostgreSQL** (databases_sql_postgres)
+  * [official image](https://hub.docker.com/_/postgres) version 14.4
+  * configured and ready to use
+* **app** (databases_sql_app)
+  * written in [Python 3](https://www.python.org/downloads/)
+  * helps you generate dumb data
+  * configured to make your life easier
 
 If you have questions, doubts or don't know what to do, then create an Issue in this repository.
 

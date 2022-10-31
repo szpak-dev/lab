@@ -24,10 +24,8 @@ services:
     build:
       context: ./auth
     environment:
-      - LC_ALL=C.UTF-8
-      - LC_CTYPE=C.UTF-8
       - WSGI_LOG_LEVEL=warn
-      - FLASK_LOG_LEVEL=INFO
+      - APP_LOG_LEVEL=WARNING
       - DATABASE_DSN=postgres://postgres:postgres@auth_db:5432/auth
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
@@ -39,7 +37,7 @@ services:
       context: ./auth
       dockerfile: worker.Dockerfile
     environment:
-      - LOG_LEVEL=WARNING
+      - APP_LOG_LEVEL=WARNING
       - DATABASE_DSN=postgres://postgres:postgres@auth_db:5432/auth
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
@@ -65,8 +63,8 @@ services:
     build:
       context: ./food_factory
     environment:
-      - WSGI_LOG_LEVEL=warn
-      - DJANGO_LOG_LEVEL=DEBUG
+      - WSGI_LOG_LEVEL=info
+      - APP_LOG_LEVEL=DEBUG
       - DATABASE_DSN=postgres://postgres:postgres@food_factory_db:5432/food_factory
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
       - DJANGO_SUPERUSER_USERNAME=admin
@@ -74,7 +72,7 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@example.com
 
   food_factory_db:
-    image: postgres:14.4-alpine
+    image: postgres:13.8-alpine
     container_name: microservices_mr_sandwich_food_factory_db
     hostname: food_factory_db
     networks:
@@ -95,8 +93,8 @@ services:
     build:
       context: ./web_store_cart
     environment:
-      - WSGI_LOG_LEVEL=warn
-      - FASTAPI_LOG_LEVEL=DEBUG
+      - WSGI_LOG_LEVEL=info
+      - APP_LOG_LEVEL=debug
       - DATABASE_DSN=postgres://postgres:postgres@web_store_cart_db:5432/web_store_cart
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
@@ -140,3 +138,6 @@ networks:
 
 volumes:
   central_logs:
+  db_auth:
+  db_food_factory:
+  db_web_store_cart:

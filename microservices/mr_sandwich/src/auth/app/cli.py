@@ -9,5 +9,3 @@ from users.adapters import user_creator
 def add_user():
     """Add new User to the System"""
     user_creator.create('cli_user', 'pass')
-
-

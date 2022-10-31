@@ -1,6 +1,6 @@
-FROM python:3.10.7-slim
+FROM python:3.10.8-slim
 
-ENV LOG_LEVEL='WARNING'
+ENV APP_LOG_LEVEL='WARNING'
 ENV DATABASE_DSN='postgres://postgres:postgres@default:5432/db'
 ENV RABBITMQ_DSN='amqp://guest:guest@rabbitmq//'
 

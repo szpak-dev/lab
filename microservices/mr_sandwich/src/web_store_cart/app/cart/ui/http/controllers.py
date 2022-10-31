@@ -3,13 +3,14 @@ from cart.application.add_product_to_cart import AddProductToCartCommand
 from cart.application.clear_cart import ClearCartCommand
 from cart.application.create_cart import CreateCartCommand
 from cart.application.remove_product_from_cart import RemoveProductFromCartCommand
-from cart.domain.entities import Cart
+from cart.ui.http.responses import Cart, CartProduct
 from cart.domain.value_objects import CustomerId, CartId, CartProductId
 from cart.infrastructure.in_memory_cart_repository import repository
 
 
 def get_active_cart(customer_id: int) -> Cart:
-    return repository.get_active_for_customer(CustomerId(customer_id))
+    repository.get_active_for_customer(CustomerId(customer_id))
+    return Cart(cart_products=[CartProduct()])
 
 
 def create_cart(customer_id: int) -> None:

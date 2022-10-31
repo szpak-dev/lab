@@ -2,6 +2,15 @@ venv:
 	python3 -m venv venv
 	source venv/bin/activate
 
+dev:
+	python app/manage.py runserver
+
+pi:
+	pip install $(s)
+
+pui:
+	pip uninstall $(s)
+
 fr:
 	pip freeze > app/requirements.txt
 
@@ -17,3 +26,5 @@ dbmm:
 dbmr:
 	python app/manage.py migrate
 
+envs:
+	docker exec -it microservices_mr_sandwich_food_factory printenv

@@ -14,5 +14,3 @@ DATABASES = {
         'PORT': dsn.port,
     }
 }
-
-INSTALLED_APPS += ['mod_wsgi.server']

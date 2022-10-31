@@ -89,4 +89,4 @@ class ValueObject(ABC):
 @dataclass(frozen=True)
 class Money:
     value: float
-    currency: str
+    currency: str = 'ABC'
