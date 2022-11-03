@@ -7,7 +7,7 @@ info:
 
 
 servers:
-  - url: https://localhost/auth
+  - url: https://mr_sandwich.localhost/auth
 
 
 tags:

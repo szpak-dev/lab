@@ -1,13 +1,13 @@
-from flask import Flask, request, abort, make_response
+from flask import Flask, request, abort
 
-from logger import logging
-from sessions.domain.errors import SessionError
-from sessions.adapters import api_service, request_interceptor
 from cli import add_user
-
-# tight coupling with users aggregate
-from users.adapters import user_repository
+from sessions.adapters import api_service
+from sessions.domain.errors import SessionError
+from sessions.ui.login import login_action, Credentials
+from sessions.ui.logout import logout_action
+from sessions.ui.proxy_pass import proxy_pass_action
 from users.domain.errors import UserError
+from users.ui.get_user import get_user_action
 
 allowed_http_methods = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE']
 
@@ -17,27 +17,16 @@ def create_app():
     app.cli.add_command(add_user)
 
     @app.route('/auth/login', methods=['POST'])
-    def login():
+    def login(form: Credentials):
         try:
-            session = api_service.create_session(
-                request.form.get('username'),
-                request.form.get('password'),
-            )
-
-            response = make_response('', 201)
-            response.set_cookie('session_id', session.raw_id())
-            return response
+            return login_action(form)
         except (UserError, SessionError):
             abort(401)
 
     @app.route('/auth/logout')
     def logout():
         try:
-            api_service.destroy_session('admin_user')
-
-            response = make_response('', 204)
-            response.delete_cookie('session_id')
-            return response
+            return logout_action(request.cookies.get('session_id'))
         except (UserError, SessionError):
             abort(401)
 
@@ -45,9 +34,7 @@ def create_app():
     def me():
         try:
             username = api_service.get_current_username(request.cookies.get('session_id'))
-            user = user_repository.get_by_username(username)
-
-            return make_response(user.serialize(), 200)
+            return get_user_action(username)
         except (UserError, SessionError):
             abort(401)
 
@@ -55,20 +42,9 @@ def create_app():
     @app.route('/<string:path>', methods=allowed_http_methods)
     @app.route('/<path:path>', methods=allowed_http_methods)
     def proxy_pass(path):
-
         try:
-            res = request_interceptor.pass_request(request)
-            _log_proxy_pass(request, res)
-            text, headers, status_code = res.text, dict(res.headers), res.status_code
-
-            flask_response = make_response(text, status_code, headers)
-            flask_response.headers = headers
-
-            return flask_response
+            return proxy_pass_action(request)
         except SessionError:
             abort(401)
-
-    def _log_proxy_pass(req, res):
-        logging.info('[ProxyPass] {} > {}'.format(req.path, res.status_code))
 
     return app

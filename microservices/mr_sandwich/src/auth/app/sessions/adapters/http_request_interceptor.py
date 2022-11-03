@@ -1,4 +1,4 @@
-from flask import Request as FlaskRequest
+from flask import Request
 from requests import Response
 
 from sessions.domain.services.request_identity_extractor import extract_identity
@@ -16,7 +16,7 @@ class HttpRequestInterceptor(RequestInterceptor):
         self._session_repository = session_repository
         self._jwt_repository = jwt_repository
 
-    def pass_request(self, flask_request: FlaskRequest) -> Response:
+    def pass_request(self, flask_request: Request) -> Response:
         identity = extract_identity(flask_request)
         self._assert_valid_identity(identity)
 
