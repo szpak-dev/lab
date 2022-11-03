@@ -4,7 +4,6 @@ djagger==1.1.4
 Django==4.1.2
 django-storages==1.13.1
 djangorestframework==3.14.0
-djantic==0.7.0
 dsnparse==0.1.15
 Flask==2.2.2
 gunicorn==20.1.0

@@ -1,9 +1,11 @@
 from django.urls import path
 
-from . import views
+from .actions.create_reservation.api import CreateReservationAPI
+from .actions.get_reservation.api import GetReservationAPI
+from .actions.remove_reservation.api import RemoveReservationAPI
 
 urlpatterns = [
-    path('reservations/', views.CreateReservationAPI.as_view()),
-    path('reservations/<int:reservation_id>', views.GetReservationAPI.as_view()),
-    path('reservations/<int:reservation_id>/customers/<int:customer_id>', views.RemoveReservationAPI.as_view()),
+    path('reservations/', CreateReservationAPI.as_view()),
+    path('reservations/customers/<int:customer_id>', GetReservationAPI.as_view()),
+    path('reservations/<int:reservation_id>/', RemoveReservationAPI.as_view()),
 ]

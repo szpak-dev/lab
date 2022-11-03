@@ -1,3 +1,4 @@
+from dishes.actions.create_reservation.responses import Reservation
 from dishes.errors import DailyAvailabilityNotCreatedYet, DishNotFound, RevisionIsOutdated, DishBecameUnavailable
 from dishes.models import DishDailyAvailability, Dish
 from dishes.models import DishReservation
@@ -30,7 +31,7 @@ def get_dish(dish_id: int) -> Dish:
         raise DishNotFound('Dish with given Id was not found')
 
 
-def reserve_dish(dish_daily_availability: DishDailyAvailability, customer_id: int):
+def reserve_dish(dish_daily_availability: DishDailyAvailability, customer_id: int) -> Reservation:
     pk = dish_daily_availability.pk
     dish_id = dish_daily_availability.dish.id
     day = dish_daily_availability.day
@@ -42,7 +43,7 @@ def reserve_dish(dish_daily_availability: DishDailyAvailability, customer_id: in
         )
 
         if updated == 1:
-            DishReservation(dish_id=dish_id, customer_id=customer_id).save()
-            return
+            dish_reservation = DishReservation(dish_id=dish_id, customer_id=customer_id).save()
+            return Reservation.from_orm(dish_reservation)
 
         raise RevisionIsOutdated('Available Dishes count has changed')
