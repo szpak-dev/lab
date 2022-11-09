@@ -16,4 +16,4 @@ class User(BaseModel):
 
 def get_user_action(username: str) -> Response:
     user = api_service.get_user(username)
-    return make_response(user, 200)
+    return make_response(user.serialize(), 200)

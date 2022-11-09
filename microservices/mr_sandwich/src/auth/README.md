@@ -4,7 +4,7 @@ decided to make a split of our Monolith to Microservices using Bounded Contexts,
 strictly a business rule, but it fits into a Domain as a feature list required for recognizing users.
 
 ## Architecture
-Architecture used for the software, is called `Ports and Adapters`. In this philosophy of code organization, **Ports** 
+Architecture used for the software, is called [Ports and Adapters](#). In this philosophy of code organization, **Ports** 
 are what **Domain** expect from the remaining blocks of code, which are **User Interface** and **Infrastructure**. By 
 defining a Port, the Domain tells how it will be driven and/or how it will drive the provided **Adapters**. Please mind,
 that Ports belong to the business logic, that's why they live in `domain` directory, defined as **Interfaces**.

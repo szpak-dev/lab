@@ -17,9 +17,12 @@ def create_app():
     app.cli.add_command(add_user)
 
     @app.route('/auth/login', methods=['POST'])
-    def login(form: Credentials):
+    def login():
         try:
-            return login_action(form)
+            return login_action(Credentials(
+                username=request.form.get('username'),
+                password=request.form.get('password')
+            ))
         except (UserError, SessionError):
             abort(401)
 

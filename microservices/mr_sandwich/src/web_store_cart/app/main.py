@@ -4,7 +4,6 @@ from typing import List
 from fastapi import FastAPI
 from uvicorn import run
 
-# Use aliases only in bootstrapping file, on deeper levels it may mess up IDE auto refactor result.
 from cart.ui.http import controllers as cart_controllers
 from product.ui.http import controllers as product_controllers
 from cart.ui.http.responses import Cart
