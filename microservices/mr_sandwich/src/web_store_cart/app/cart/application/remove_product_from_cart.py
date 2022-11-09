@@ -2,14 +2,12 @@ from dataclasses import dataclass
 
 from buslane.commands import Command, CommandHandler
 
-from cart.domain.value_objects import CartId, CustomerId, CartProductId
-
 
 @dataclass(frozen=True)
 class RemoveProductFromCartCommand(Command):
-    cart_id: CartId
-    customer_id: CustomerId
-    cart_product_id: CartProductId
+    cart_id: int
+    customer_id: int
+    cart_product_id: int
 
 
 class RemoveProductFromCartCommandHandler(CommandHandler[RemoveProductFromCartCommand]):
