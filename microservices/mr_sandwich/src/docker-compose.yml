@@ -95,7 +95,7 @@ services:
     environment:
       - WSGI_LOG_LEVEL=info
       - APP_LOG_LEVEL=debug
-      - DATABASE_DSN=postgres://postgres:postgres@web_store_cart_db:5432/web_store_cart
+      - DATABASE_DSN=postgresql://postgres:postgres@web_store_cart_db:5432/web_store_cart
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
   web_store_cart_db:
