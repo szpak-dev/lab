@@ -19,11 +19,13 @@ class User(Base, AggregateRoot):
     roles = relationship('UserRole')
 
     def check_password(self, plain_password: PlainPassword) -> None:
-        if plain_password.value != 'password':
-            super()._emit_event(AuthenticationFailedEvent(self._id.id))
+        user_id = str(self.id)
+
+        if plain_password.value != self.password:
+            super()._emit_event(AuthenticationFailedEvent(user_id))
             raise PasswordDoesNotMatch
 
-        super()._emit_event(AuthenticationSuccess(self._id.id))
+        super()._emit_event(AuthenticationSuccess(user_id))
 
 
 class UserRole(Base):

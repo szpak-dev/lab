@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from fastapi import Response, HTTPException
 
-from domain.errors import UserError
+from adapters import user_repository, session_repository
+from domain.errors import UserError, PasswordDoesNotMatch
 from domain.value_objects import Username, PlainPassword
 
 
@@ -9,15 +10,19 @@ class Credentials(BaseModel):
     username: str
     password: str
 
-    def username(self) -> Username:
-        return Username(self.username)
-
-    def password(self) -> PlainPassword:
-        return PlainPassword(self.password)
+    @classmethod
+    def split(cls, credentials):
+        return Username(credentials.username), PlainPassword(credentials.password)
 
 
 def login_action(credentials: Credentials, response: Response):
     try:
+        username, password = Credentials.split(credentials)
 
-    except UserError:
+        user = user_repository.get_by_username(username)
+        user.check_password(password)
+
+        session = session_repository.create_session(username)
+        response.set_cookie('session_id', session.id)
+    except (UserError, PasswordDoesNotMatch):
         raise HTTPException(status_code=401, detail='Invalid credentials')

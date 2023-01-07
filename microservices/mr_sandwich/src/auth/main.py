@@ -1,41 +1,42 @@
 from os import getenv
 
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, Request, Response
 from uvicorn import run
 
-from domain.errors import SessionError
-from domain.errors import UserError
 from use_cases.create_user import Registration, create_user_action
 from use_cases.login import Credentials, login_action
+from use_cases.logout import logout_action
+from use_cases.get_user import get_user_action, User
+# from use_cases.proxy_pass import proxy_pass_action
 
 app = FastAPI()
 
 
-@app.post('/auth/users', status_code=201, tags=['Users'])
+@app.post('/auth/users', status_code=201, tags=['User'])
 def create_user(registration: Registration):
     create_user_action(registration)
 
 
+@app.get('/auth/users', status_code=200, response_model=User, tags=['User'])
+def me(request: Request):
+    return get_user_action(request)
+
+
 @app.post('/auth/login', status_code=201, tags=['Session'])
 def login(response: Response, credentials: Credentials):
-    try:
-        login_action(credentials, response)
-    except (UserError, SessionError):
-        raise HTTPException(status_code=401, detail='Invalid credentials')
+    login_action(credentials, response)
 
 
-# @app.delete('/auth/logout', status_code=204, tags=['Session'])
-# def logout():
-#     pass
-#
-#
-# @app.get('/auth/users', status_code=200, tags=['User'])
-# def me():
-#     pass
-#
-#
-# def proxy_pass(path):
-#     pass
+@app.delete('/auth/logout', status_code=204, tags=['Session'])
+def logout(request: Request, response: Response):
+    logout_action(request, response)
+
+
+@app.route('/{full_path:path}', methods=['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'])
+def proxy_pass(request: Request, full_path: str):
+    pass
+    # print(full_path)
+    # return proxy_pass_action(request)
 
 
 if __name__ == "__main__":

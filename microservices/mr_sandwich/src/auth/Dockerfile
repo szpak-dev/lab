@@ -7,6 +7,7 @@ ENV WSGI_LOG_LEVEL=warning
 ENV APP_LOG_LEVEL=warning
 ENV DATABASE_DSN=postgresql://postgres:postgres@default:5432/db
 ENV RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
+ENV JWT_SECRET=lnx4q37tx7q34yxty7nq34txqi3g4xtiqvvfvzlfgqi
 
 FROM base AS deps
 RUN pip install pipenv

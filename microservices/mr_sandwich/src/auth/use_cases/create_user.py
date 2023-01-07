@@ -11,18 +11,15 @@ class Registration(BaseModel):
     password: str
     repeat_password: str
 
-    def username(self) -> Username:
-        return Username(self.username)
-
-    def password(self) -> PlainPassword:
-        return PlainPassword(self.password)
+    @classmethod
+    def split(cls, registration):
+        return Username(registration.username), PlainPassword(registration.password)
 
 
 def create_user_action(registration: Registration) -> None:
+    username, password = Registration.split(registration)
+
     try:
-        user_repository.add_new(
-            registration.username(),
-            registration.password(),
-        )
+        user_repository.add_new(username, password)
     except UserAlreadyExists as e:
         raise HTTPException(status_code=400, detail=str(e))

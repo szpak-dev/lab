@@ -9,7 +9,7 @@ class SessionError(DomainError):
 
 @docstring_message
 class IdentityNotFound(SessionError):
-    """Identity was not found within flask_request"""
+    """Identity was not found within Request"""
 
 
 @docstring_message

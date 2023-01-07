@@ -6,20 +6,23 @@ class Session:
     id: str
     username: str
 
-from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class SessionId:
+    value: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Username:
     value: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Password:
     encoded: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class PlainPassword:
     value: str
 
@@ -27,11 +30,11 @@ class PlainPassword:
         return Password('password')
 
 
-@dataclass
+@dataclass(frozen=True)
 class Role:
     name: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class UserId:
     id: str
