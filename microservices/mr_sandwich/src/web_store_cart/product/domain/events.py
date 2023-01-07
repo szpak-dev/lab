@@ -1,4 +1,4 @@
-from shared.shared import DomainEvent
+from shared.ddd import DomainEvent
 
 
 class ProductCreated(DomainEvent):

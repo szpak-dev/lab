@@ -24,9 +24,9 @@ services:
     build:
       context: ./auth
     environment:
-      - WSGI_LOG_LEVEL=warn
-      - APP_LOG_LEVEL=WARNING
-      - DATABASE_DSN=postgres://postgres:postgres@auth_db:5432/auth
+      - WSGI_LOG_LEVEL=info
+      - APP_LOG_LEVEL=debug
+      - DATABASE_DSN=postgresql://postgres:postgres@auth_db:5432/auth
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
   auth_worker:
@@ -38,7 +38,7 @@ services:
       dockerfile: worker.Dockerfile
     environment:
       - APP_LOG_LEVEL=WARNING
-      - DATABASE_DSN=postgres://postgres:postgres@auth_db:5432/auth
+      - DATABASE_DSN=postgresql://postgres:postgres@auth_db:5432/auth
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
 
   auth_db:
@@ -65,7 +65,7 @@ services:
     environment:
       - WSGI_LOG_LEVEL=info
       - APP_LOG_LEVEL=DEBUG
-      - DATABASE_DSN=postgres://postgres:postgres@food_factory_db:5432/food_factory
+      - DATABASE_DSN=postgresql://postgres:postgres@food_factory_db:5432/food_factory
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_PASSWORD=admin

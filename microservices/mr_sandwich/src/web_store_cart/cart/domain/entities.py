@@ -7,7 +7,8 @@ from sqlalchemy.orm import relationship
 from cart.domain.events import ProductAddedToCart, ProductRemovedFromCart, CartCleared
 from cart.domain.value_objects import CartProductId
 from shared.db import Base
-from shared.shared import AggregateRoot, Money
+from shared.ddd import AggregateRoot
+from shared.shared import Money
 
 
 class Cart(Base, AggregateRoot):

@@ -14,7 +14,7 @@ pui:
 fr:
 	pip freeze > app/requirements.txt
 
-exec:
+sh:
 	docker exec -it microservices_mr_sandwich_food_factory bash
 
 dbexec:

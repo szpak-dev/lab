@@ -13,12 +13,7 @@ from product.ui.http.responses import ProductListItem, Product
 app = FastAPI()
 
 
-@app.get(
-    '/web_store_cart/carts',
-    status_code=200,
-    response_model=Cart,
-    tags=['Cart'],
-)
+@app.get('/web_store_cart/carts', status_code=200, response_model=Cart, tags=['Cart'])
 def get_active_cart(customer_id: int) -> Cart:
     try:
         return cart_controllers.get_active_cart(customer_id)
@@ -26,11 +21,7 @@ def get_active_cart(customer_id: int) -> Cart:
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@app.post(
-    '/web_store_cart/carts',
-    status_code=201,
-    tags=['Cart'],
-)
+@app.post('/web_store_cart/carts', status_code=201, tags=['Cart'])
 def create_cart(customer_id: int = Form()):
     try:
         return cart_controllers.create_cart(customer_id)
@@ -38,11 +29,7 @@ def create_cart(customer_id: int = Form()):
         raise HTTPException(status_code=409, detail=str(e))
 
 
-@app.post(
-    '/web_store_cart/carts/{cart_id}/cart_products',
-    status_code=201,
-    tags=['Cart'],
-)
+@app.post('/web_store_cart/carts/{cart_id}/cart_products', status_code=201, tags=['Cart'])
 def add_product_to_cart(cart_id: int, customer_id: int = Form(), product_id: int = Form()):
     try:
         cart_controllers.add_product_to_cart(
@@ -54,11 +41,7 @@ def add_product_to_cart(cart_id: int, customer_id: int = Form(), product_id: int
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@app.delete(
-    '/web_store_cart/carts/{cart_id}/cart_products/{cart_product_id}',
-    status_code=204,
-    tags=['Cart'],
-)
+@app.delete('/web_store_cart/carts/{cart_id}/cart_products/{cart_product_id}', status_code=204, tags=['Cart'])
 def remove_product_from_cart(cart_id: int, cart_product_id: int, customer_id: int):
     try:
         return cart_controllers.remove_product_from_cart(
@@ -69,11 +52,8 @@ def remove_product_from_cart(cart_id: int, cart_product_id: int, customer_id: in
     except CartNotFound as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@app.delete(
-    '/web_store_cart/carts/{cart_id}',
-    status_code=204,
-    tags=['Cart'],
-)
+
+@app.delete('/web_store_cart/carts/{cart_id}', status_code=204, tags=['Cart'])
 def clear_cart(cart_id: int, customer_id: int):
     try:
         return cart_controllers.clear_cart(cart_id, customer_id)
@@ -81,22 +61,12 @@ def clear_cart(cart_id: int, customer_id: int):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@app.get(
-    '/web_store_cart/products',
-    status_code=200,
-    response_model=List[ProductListItem],
-    tags=['Product'],
-)
+@app.get('/web_store_cart/products', status_code=200, response_model=List[ProductListItem], tags=['Product'])
 def get_products_list():
     return product_controllers.get_product_list()
 
 
-@app.get(
-    '/web_store_cart/products/{product_id}',
-    status_code=200,
-    response_model=Product,
-    tags=['Product'],
-)
+@app.get('/web_store_cart/products/{product_id}', status_code=200, response_model=Product, tags=['Product'])
 def get_product():
     return product_controllers.get_product(1)
 

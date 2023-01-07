@@ -1,4 +1,5 @@
-from shared.shared import docstring_message, DomainError
+from shared.ddd import DomainError
+from shared.shared import docstring_message
 
 
 @docstring_message
