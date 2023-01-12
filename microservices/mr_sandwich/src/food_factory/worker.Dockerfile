@@ -5,7 +5,7 @@ ENV DATABASE_DSN='postgres://postgres:postgres@default:5432/db'
 ENV RABBITMQ_DSN='amqp://guest:guest@rabbitmq//'
 
 WORKDIR /opt/app
-ADD ./app/ .
+ADD app_/ .
 
 RUN pip install -r requirements.txt && \
     apt-get -qq clean && \

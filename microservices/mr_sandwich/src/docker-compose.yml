@@ -13,10 +13,11 @@ services:
       - "443:443"
       - "443:443/udp"
     environment:
-      - DOMAIN=mr_sandwich.localhost
+      - DOMAIN=mr.localhost
       - LOG_LEVEL=warn
 
   auth:
+    platform: linux/amd64
     container_name: microservices_mr_sandwich_auth
     hostname: auth
     networks:
@@ -28,9 +29,10 @@ services:
       - APP_LOG_LEVEL=debug
       - DATABASE_DSN=postgresql://postgres:postgres@auth_db:5432/auth
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
-      - JWT_SECRET= lnz847txnnq3ty4x7ghwbJKVNAV954UYONCROHGAKUHV
+      - JWT_SECRET=lnz847txnnq3ty4x7ghwbJKVNAV954UYONCROHGAKUHV
 
   auth_worker:
+    platform: linux/amd64
     container_name: microservices_mr_sandwich_auth_worker
     networks:
       - microservices_mr_sandwich
@@ -57,6 +59,7 @@ services:
       - POSTGRES_DB=auth
 
   food_factory:
+    platform: linux/amd64
     container_name: microservices_mr_sandwich_food_factory
     hostname: food_factory
     networks:
@@ -87,6 +90,7 @@ services:
       - POSTGRES_DB=food_factory
 
   web_store_cart:
+    platform: linux/amd64
     container_name: microservices_mr_sandwich_web_store_cart
     hostname: web_store_cart
     networks:
@@ -142,3 +146,4 @@ volumes:
   db_auth:
   db_food_factory:
   db_web_store_cart:
+  rabbitmq:

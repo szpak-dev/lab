@@ -1,7 +1,7 @@
 {
         log {
                 output stdout
-                level {$LOG_LEVEL}
+                level debug
         }
 }
 

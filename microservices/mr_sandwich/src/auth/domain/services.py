@@ -2,6 +2,7 @@ from os import getenv
 import jwt
 from fastapi import Request
 
+from domain.auth import JwtClaims
 from domain.errors import IdentityNotFound
 from domain.value_objects import SessionId
 
@@ -11,29 +12,24 @@ def extract_session_id(request: Request) -> SessionId:
         if req.cookies.get('session_id'):
             return req.cookies.get('session_id')
 
-    def from_jwt(req: Request):
+    def from_header(req: Request):
         header_value = req.headers.get('Authorization')
         if not header_value:
             raise IdentityNotFound
 
-        bearer, encoded_jwt = header_value.split(' ')
-        payload = decode_jwt(encoded_jwt)
-
-        if payload.get('sid'):
-            return payload.get('sid')
+        return req.headers.get('Authorization' )
 
     if from_cookie(request):
         return SessionId(from_cookie(request))
 
-    if from_jwt(request):
-        return SessionId(from_jwt(request))
+    if from_header(request):
+        return SessionId(from_header(request))
 
     raise IdentityNotFound
 
 
-def encode_jwt(session_id: str, username: str, ttl: int) -> str:
-    payload = {'sid': session_id, 'username': username, 'ttl': ttl}
-    return jwt.encode(payload, getenv('JWT_SECRET'), algorithm='HS256')
+def encode_jwt(jwt_claims: JwtClaims) -> str:
+    return jwt.encode(jwt_claims, getenv('JWT_SECRET'), algorithm='HS256')
 
 
 def decode_jwt(encoded_jwt: str) -> dict:

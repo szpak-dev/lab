@@ -2,7 +2,7 @@ from datetime import datetime
 
 from shared.ddd import AggregateRoot
 from domain.events import AuthenticationFailedEvent, AuthenticationSuccess
-from domain.value_objects import Role, PlainPassword
+from domain.value_objects import Role, PlainPassword, UserId, Username
 from domain.errors import PasswordDoesNotMatch
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
@@ -26,6 +26,12 @@ class User(Base, AggregateRoot):
             raise PasswordDoesNotMatch
 
         super()._emit_event(AuthenticationSuccess(user_id))
+
+    def get_id(self) -> UserId:
+        return UserId(str(self.id))
+
+    def get_username(self) -> Username:
+        return Username(self.username)
 
 
 class UserRole(Base):

@@ -2,14 +2,19 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class Session:
+class UserId:
     id: str
-    username: str
 
 
 @dataclass(frozen=True)
 class SessionId:
     value: str
+
+
+@dataclass(frozen=True)
+class Session:
+    id: SessionId
+    user_id: UserId
 
 
 @dataclass(frozen=True)
@@ -35,6 +40,4 @@ class Role:
     name: str
 
 
-@dataclass(frozen=True)
-class UserId:
-    id: str
+

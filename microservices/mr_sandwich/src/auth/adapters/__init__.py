@@ -1,7 +1,10 @@
-from adapters.redis_session_repository import RedisSessionRepository
+from adapters.in_memory_jwt_claims_repository import InMemoryJwtClaimsRepository
+from adapters.in_memory_session_repository import InMemorySessionRepository
 from adapters.sql_user_repository import SqlUserRepository
+from domain.ports.jwt_claims_repository import JwtClaimsRepository
 from domain.ports.session_repository import SessionRepository
 from domain.ports.user_repository import UserRepository
 
 user_repository: UserRepository = SqlUserRepository()
-session_repository: SessionRepository = RedisSessionRepository()
+session_repository: SessionRepository = InMemorySessionRepository()
+jwt_claims_repository: JwtClaimsRepository = InMemoryJwtClaimsRepository()

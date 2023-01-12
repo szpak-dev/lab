@@ -1,16 +1,25 @@
-FROM python:3.10.7-slim
+FROM python:3.10.8-slim as builder
 
-ENV APP_LOG_LEVEL='WARNING'
-ENV DATABASE_DSN='postgres://postgres:postgres@default:5432/db'
-ENV RABBITMQ_DSN='amqp://guest:guest@rabbitmq//'
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE 1
 
-WORKDIR /opt/app
-ADD ./app/ .
+COPY . /app
+WORKDIR /app
 
-RUN pip install -r requirements.txt && \
-    apt-get -qq clean && \
-    apt-get -qq autoclean && \
-    apt-get -qq remove --purge --auto-remove --yes && \
-    rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir --upgrade pipenv
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv sync
+
+FROM python:3.10.8-slim
+
+ENV WSGI_LOG_LEVEL=warning
+ENV APP_LOG_LEVEL=warning
+ENV DATABASE_DSN=postgresql://postgres:postgres@default:5432/db
+ENV RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
+ENV JWT_SECRET=lnx4q37tx7q34yxty7nq34txqi3g4xtiqvvfvzlfgqi
+
+WORKDIR /app
+COPY --from=builder /app .
+ENV PATH="/app/.venv/bin:$PATH"
 
 CMD ["python", "worker.py"]

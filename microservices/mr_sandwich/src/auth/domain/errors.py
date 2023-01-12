@@ -18,6 +18,11 @@ class SessionNotFound(SessionError):
 
 
 @docstring_message
+class JwtClaimsNotFound(SessionError):
+    """JWT claims not found"""
+
+
+@docstring_message
 class UserError(DomainError):
     """User error"""
 
