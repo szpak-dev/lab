@@ -30,4 +30,3 @@ def create_user_action(registration: Registration) -> None:
         user.username = username.value
         user.password = password.encode().encoded
         user_repository.save(user)
-

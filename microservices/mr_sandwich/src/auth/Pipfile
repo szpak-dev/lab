@@ -39,6 +39,9 @@ psycopg2-binary = "*"
 alembic = "*"
 pyjwt = "*"
 httpx = "*"
+asyncpg = "*"
+databases = "*"
+greenlet = "*"
 
 [dev-packages]
 

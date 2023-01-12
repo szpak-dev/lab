@@ -10,18 +10,28 @@ def _log_proxy_pass(req, res):
     logging.info('[ProxyPass] {} > {}'.format(req.file, res.status_code))
 
 
-def proxy_pass_action(request: Request):
-    # pass
+async def proxy_pass_action(request: Request):
     session_id = extract_session_id(request)
     session = session_repository.get_by_id(session_id)
 
     jwt_claims = jwt_claims_repository.get_by_session_id(session.id)
-    print(jwt_claims)
     encoded_jwt = encode_jwt(jwt_claims)
-    #
-    # return httpx.request(
-    #     method=request.method,
-    #     url=request.headers.get('Host'),
-    #     headers=request.headers,
-    #     params=request.query_params,
-    # )
+
+    content = await request.body()
+
+    headers = dict(request.headers.items())
+    headers['Authorization'] = 'Bearer {}'.format(encoded_jwt)
+
+    with httpx.Client() as client:
+        try:
+            return client.request(
+                method=request.method,
+                url=str(request.url),
+                content=content,
+                headers=headers,
+                params=request.query_params,
+            )
+        except httpx.HTTPError as e:
+            print(str(e))
+        except Exception as e:
+            print(str(e))

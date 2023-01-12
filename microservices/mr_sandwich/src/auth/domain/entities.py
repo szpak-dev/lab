@@ -7,7 +7,7 @@ from domain.errors import PasswordDoesNotMatch
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from shared.db import Base
+from shared.async_db import Base
 
 
 class User(Base, AggregateRoot):

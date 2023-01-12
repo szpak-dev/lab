@@ -29,8 +29,10 @@ def extract_session_id(request: Request) -> SessionId:
 
 
 def encode_jwt(jwt_claims: JwtClaims) -> str:
-    return jwt.encode(jwt_claims, getenv('JWT_SECRET'), algorithm='HS256')
+    payload = vars(jwt_claims)
+    return jwt.encode(payload, getenv('JWT_SECRET', 'test'), algorithm='HS256')
 
 
-def decode_jwt(encoded_jwt: str) -> dict:
-    return jwt.decode(encoded_jwt, getenv('JWT_SECRET'), algorithms=["HS256"])
+def decode_jwt(encoded_jwt: str) -> JwtClaims:
+    payload = jwt.decode(encoded_jwt, getenv('JWT_SECRET', 'test'), algorithms=["HS256"])
+    return payload
