@@ -5,7 +5,7 @@ envs:
 	docker exec -it microservices_mr_sandwich_web_store_cart printenv
 
 dev:
-	echo "You need to manually cd into app directory and run dev.sh script"
+	uvicorn main:app --reload --port 8002
 
 mm:
 	alembic revision --autogenerate -m "${m}"

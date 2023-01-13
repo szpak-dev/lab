@@ -17,11 +17,11 @@ class Registration(BaseModel):
         return Username(registration.username), PlainPassword(registration.password)
 
 
-def create_user_action(registration: Registration) -> None:
+async def create_user_action(registration: Registration) -> None:
     username, password = Registration.split(registration)
 
     try:
-        user_repository.get_by_username(username)
+        await user_repository.get_by_username(username)
         raise UserAlreadyExists
     except UserAlreadyExists as e:
         raise HTTPException(status_code=400, detail=str(e))

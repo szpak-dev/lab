@@ -12,12 +12,12 @@ app = FastAPI()
 
 @app.post('/auth/users', status_code=201, tags=['User'])
 async def create_user(registration: Registration):
-    create_user_action(registration)
+    await create_user_action(registration)
 
 
 @app.get('/auth/users', status_code=200, response_model=User, tags=['User'])
 async def me(request: Request):
-    return get_user_action(request)
+    return await get_user_action(request)
 
 
 @app.post('/auth/login', status_code=201, tags=['Session'])
@@ -27,7 +27,7 @@ async def login(response: Response, credentials: Credentials):
 
 @app.delete('/auth/logout', status_code=204, tags=['Session'])
 async def logout(request: Request, response: Response):
-    logout_action(request, response)
+    await logout_action(request, response)
 
 
 @app.api_route('/web_store_cart/{full_path:path}', methods=methods)

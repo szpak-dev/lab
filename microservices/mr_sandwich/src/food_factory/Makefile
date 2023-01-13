@@ -14,4 +14,7 @@ dbmr:
 	python manage.py migrate
 
 dev:
-	python manage.py runserver 8100
+	python manage.py runserver 8001
+
+su:
+	docker exec -it microservices_mr_sandwich_food_factory python manage.py createsuperuser

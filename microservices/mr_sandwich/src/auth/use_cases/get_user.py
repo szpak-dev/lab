@@ -14,11 +14,11 @@ class User(BaseModel):
         orm_mode = True
 
 
-def get_user_action(request: Request):
+async def get_user_action(request: Request) -> User:
     try:
         session_id = extract_session_id(request)
         session = session_repository.get_by_id(session_id)
 
-        return user_repository.get_by_id(session.user_id)
+        return await user_repository.get_by_id(session.user_id)
     except (IdentityNotFound, SessionNotFound, UserNotFound) as e:
         raise HTTPException(status_code=401, detail=str(e))

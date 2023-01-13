@@ -6,6 +6,10 @@ class DishNotFound(DishError):
     pass
 
 
+class ReservationNotFound(DishError):
+    pass
+
+
 class DishBecameUnavailable(DishError):
     pass
 
