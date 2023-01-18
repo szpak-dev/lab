@@ -7,32 +7,32 @@ from cart.application.get_active_cart import provide
 from cart.ui.http.responses import Cart
 
 
-def get_active_cart(customer_id: int) -> Cart:
-    return provide(customer_id)
+async def get_active_cart(customer_id: int) -> Cart:
+    return await provide(customer_id)
 
 
-def create_cart(customer_id: int) -> None:
-    command_bus.execute(CreateCartCommand(customer_id))
+async def create_cart(customer_id: int) -> None:
+    await command_bus.handle(CreateCartCommand(customer_id))
 
 
-def add_product_to_cart(cart_id: int, customer_id: int, product_id: int) -> None:
-    command_bus.execute(AddProductToCartCommand(
+async def add_product_to_cart(cart_id: int, customer_id: int, product_id: int) -> None:
+    await command_bus.handle(AddProductToCartCommand(
         cart_id,
         customer_id,
         product_id,
     ))
 
 
-def remove_product_from_cart(cart_id: int, customer_id: int, cart_product_id: int) -> None:
-    command_bus.execute(RemoveProductFromCartCommand(
+async def remove_product_from_cart(cart_id: int, customer_id: int, cart_product_id: int) -> None:
+    await command_bus.handle(RemoveProductFromCartCommand(
         cart_id,
         customer_id,
         cart_product_id,
     ))
 
 
-def clear_cart(cart_id: int, customer_id: int) -> None:
-    command_bus.execute(ClearCartCommand(
+async def clear_cart(cart_id: int, customer_id: int) -> None:
+    await command_bus.handle(ClearCartCommand(
         cart_id,
         customer_id,
     ))

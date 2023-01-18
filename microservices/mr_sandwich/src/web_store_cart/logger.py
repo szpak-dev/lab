@@ -5,7 +5,7 @@ from logging.config import dictConfig
 
 
 _WSGI_LOG_LEVEL = getenv('WSGI_LOG_LEVEL', 'NO_WSGI')
-_APP_LOG_LEVEL = getenv('APP_LOG_LEVEL', 'WARNING')
+_APP_LOG_LEVEL = getenv('APP_LOG_LEVEL', 'DEBUG')
 
 dictConfig({
     'version': 1,
@@ -19,11 +19,11 @@ dictConfig({
         'handlers': ['console'],
         'level': _APP_LOG_LEVEL,
     },
+    'command_coach': {
+        'handlers': ['console'],
+        'level': _APP_LOG_LEVEL,
+    },
 })
 
-print('Container logging, WSGI: {}, App: {}'.format(
-    _WSGI_LOG_LEVEL,
-    _APP_LOG_LEVEL,
-), flush=True)
 
 logging = logging

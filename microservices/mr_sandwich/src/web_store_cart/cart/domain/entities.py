@@ -4,8 +4,9 @@ from functools import reduce
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
+from cart.domain.erorrs import ProductNotInCart
 from cart.domain.events import ProductAddedToCart, ProductRemovedFromCart, CartCleared
-from cart.domain.value_objects import CartProductId
+from cart.domain.value_objects import CartProductId, CustomerId
 from shared.db import Base
 from shared.ddd import AggregateRoot
 from shared.shared import Money
@@ -14,7 +15,7 @@ from shared.shared import Money
 class Cart(Base, AggregateRoot):
     __tablename__ = 'carts'
     id = Column(Integer, primary_key=True)
-    cart_products = relationship('CartProduct')
+    cart_products = relationship('CartProduct', lazy='joined', cascade='all, delete-orphan')
     customer_id = Column(Integer)
     status = Column(String)
     total_price = Column(Float)
@@ -32,9 +33,14 @@ class Cart(Base, AggregateRoot):
         self._emit_event(ProductAddedToCart())
 
     def remove_product(self, cart_product_id: CartProductId):
-        self.cart_products = list(filter(lambda cp: cp.id != cart_product_id.id, self.cart_products))
-        self._recalculate()
-        self._emit_event(ProductRemovedFromCart())
+        for cart_product in self.cart_products:
+            if cart_product.id == cart_product_id.id:
+                self.cart_products.remove(cart_product)
+                self._recalculate()
+                self._emit_event(ProductRemovedFromCart())
+                return
+
+        raise ProductNotInCart
 
     def clear(self):
         self.cart_products = []
@@ -58,3 +64,11 @@ class CartProduct(Base):
     product_name = Column(String)
     price = Column(Float)
     created_at = Column(DateTime, default=datetime.now)
+
+
+def create_empty_cart(customer_id: CustomerId) -> Cart:
+    cart = Cart()
+    cart.customer_id = customer_id.id
+    cart.status = 'ACTIVE'
+    cart.total_price = 0.0
+    return cart

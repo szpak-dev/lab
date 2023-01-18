@@ -3,8 +3,8 @@ import logging
 from os import getenv
 from logging.config import dictConfig
 
-_WSGI_LOG_LEVEL = getenv('WSGI_LOG_LEVEL', 'NO_WSGI')
-_APP_LOG_LEVEL = getenv('APP_LOG_LEVEL', 'WARNING')
+# default for dev environment
+_APP_LOG_LEVEL = getenv('APP_LOG_LEVEL', 'DEBUG')
 
 dictConfig({
     'version': 1,
@@ -20,9 +20,6 @@ dictConfig({
     },
 })
 
-print('Auth process, WSGI: {}, App: {}'.format(
-    _WSGI_LOG_LEVEL,
-    _APP_LOG_LEVEL,
-), flush=True)
+logging.info('Auth uvicorn started...')
 
 logging = logging

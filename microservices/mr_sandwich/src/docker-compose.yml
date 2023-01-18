@@ -27,7 +27,7 @@ services:
     environment:
       - WSGI_LOG_LEVEL=info
       - APP_LOG_LEVEL=debug
-      - DATABASE_DSN=postgresql://postgres:postgres@auth_db:5432/auth
+      - DATABASE_DSN=postgresql+asyncpg://postgres:postgres@auth_db:5432/auth
       - RABBITMQ_DSN=amqp://guest:guest@rabbitmq//
       - JWT_SECRET=lnz847txnnq3ty4x7ghwbJKVNAV954UYONCROHGAKUHV
 
