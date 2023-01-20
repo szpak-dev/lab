@@ -37,6 +37,6 @@ class SqlUserRepository(UserRepository):
                 raise UserNotFound
 
     async def save(self, user: User) -> None:
-        async with async_session as session:
+        async with async_session() as session:
             session.add(user)
-            session.commit()
+            await session.commit()

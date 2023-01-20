@@ -20,6 +20,4 @@ dictConfig({
     },
 })
 
-logging.info('Auth uvicorn started...')
-
 logging = logging

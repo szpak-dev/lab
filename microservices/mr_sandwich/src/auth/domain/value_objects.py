@@ -10,6 +10,9 @@ class UserId:
 class SessionId:
     value: str
 
+    def raw(self) -> str:
+        return self.value
+
 
 @dataclass(frozen=True)
 class Session:

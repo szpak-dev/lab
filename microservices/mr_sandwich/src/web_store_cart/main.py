@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 
 from fastapi import FastAPI, HTTPException
-from logger import logging
+from shared.logger import logging
 
 from cart.domain.erorrs import CartNotFound, ActiveCartExists, ProductNotInCart
 from cart.ui.http import controllers as cart_controllers
@@ -12,14 +12,12 @@ from cart.ui.http.responses import Cart
 from product.ui.http.responses import ProductListItem, Product
 from cart.ui.http.requests import AddProductToCart
 
-logging.info('Starting web_store_cart application')
-
 app = FastAPI(debug=True)
 
 
 @app.on_event('startup')
 async def on_startup():
-    pass
+    logging.info('Starting web_store_cart application')
 
 
 @app.get('/web_store_cart/carts', status_code=200, response_model=Cart, tags=['Cart'])

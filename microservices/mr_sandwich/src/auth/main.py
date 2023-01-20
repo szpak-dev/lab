@@ -3,11 +3,11 @@ from fastapi import FastAPI, Request, Response
 from use_cases.create_user import Registration, create_user_action
 from use_cases.login import Credentials, login_action
 from use_cases.logout import logout_action
-from use_cases.get_user import get_user_action, User
+from use_cases.get_logged_in_user import get_logged_in_user_action, User
 from use_cases.proxy_pass import proxy_pass_action
 
 methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-app = FastAPI()
+app = FastAPI(debug=True)
 
 
 @app.post('/auth/users', status_code=201, tags=['User'])
@@ -17,7 +17,7 @@ async def create_user(registration: Registration):
 
 @app.get('/auth/users', status_code=200, response_model=User, tags=['User'])
 async def me(request: Request):
-    return await get_user_action(request)
+    return await get_logged_in_user_action(request)
 
 
 @app.post('/auth/login', status_code=201, tags=['Session'])

@@ -1,37 +1,33 @@
 import httpx
 from fastapi import Request, HTTPException
 
-from domain.errors import SessionNotFound, JwtClaimsNotFound
-from domain.services import extract_session_id, encode_jwt
-from adapters import session_repository, jwt_claims_repository
-from shared.logger import logging
-
-
-def _log_proxy_pass(req, res):
-    logging.info('[ProxyPass] {} > {}'.format(req.file, res.status_code))
+from domain.errors import SessionNotFound, JwtClaimsNotFound, IdentityNotFound
+from domain.services import extract_session_id
+from adapters.driving import http_proxy_pass
 
 
 async def proxy_pass_action(request: Request):
     try:
         session_id = extract_session_id(request)
-        session = session_repository.get_by_id(session_id)
+    except IdentityNotFound as e:
+        raise HTTPException(status_code=401, detail=str(e))
 
-        jwt_claims = jwt_claims_repository.get_by_session_id(session.id)
-        encoded_jwt = encode_jwt(jwt_claims)
+    try:
+        jwt_claims = http_proxy_pass.authenticate(session_id)
     except (SessionNotFound, JwtClaimsNotFound) as e:
         raise HTTPException(status_code=401, detail=str(e))
 
-    content = await request.body()
-
-    headers = dict(request.headers.items())
-    headers['Authorization'] = 'Bearer {}'.format(encoded_jwt)
+    headers = http_proxy_pass.append_jwt_to_headers(
+        jwt_claims,
+        dict(request.headers.items()),
+    )
 
     with httpx.Client() as client:
         try:
             return client.request(
                 method=request.method,
                 url=str(request.url),
-                content=content,
+                content=await request.body(),
                 headers=headers,
                 params=request.query_params,
             )
