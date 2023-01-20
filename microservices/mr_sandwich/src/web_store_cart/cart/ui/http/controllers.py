@@ -1,4 +1,4 @@
-from cart.application import command_bus
+from shared.command_bus import bus
 from cart.application.add_product_to_cart import AddProductToCartCommand
 from cart.application.clear_cart import ClearCartCommand
 from cart.application.create_cart import CreateCartCommand
@@ -12,11 +12,11 @@ async def get_active_cart(customer_id: int) -> Cart:
 
 
 async def create_cart(customer_id: int) -> None:
-    await command_bus.handle(CreateCartCommand(customer_id))
+    await bus.handle(CreateCartCommand(customer_id))
 
 
 async def add_product_to_cart(cart_id: int, customer_id: int, product_id: int) -> None:
-    await command_bus.handle(AddProductToCartCommand(
+    await bus.handle(AddProductToCartCommand(
         cart_id,
         customer_id,
         product_id,
@@ -24,7 +24,7 @@ async def add_product_to_cart(cart_id: int, customer_id: int, product_id: int) -
 
 
 async def remove_product_from_cart(cart_id: int, customer_id: int, cart_product_id: int) -> None:
-    await command_bus.handle(RemoveProductFromCartCommand(
+    await bus.handle(RemoveProductFromCartCommand(
         cart_id,
         customer_id,
         cart_product_id,
@@ -32,7 +32,7 @@ async def remove_product_from_cart(cart_id: int, customer_id: int, cart_product_
 
 
 async def clear_cart(cart_id: int, customer_id: int) -> None:
-    await command_bus.handle(ClearCartCommand(
+    await bus.handle(ClearCartCommand(
         cart_id,
         customer_id,
     ))

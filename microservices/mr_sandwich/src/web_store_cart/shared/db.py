@@ -1,18 +1,32 @@
+from __future__ import annotations
+
 from os import getenv
 
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import sessionmaker
 
-DATABASE_DSN = getenv('DATABASE_DSN', 'postgresql://postgres:postgres@localhost:5435/web_store_cart')
-engine = create_engine(DATABASE_DSN)
 
-DbSession = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-)
+class Database:
+    def __init__(self, dsn: str):
+        self._engine = create_async_engine(
+            dsn,
+            echo=True,
+        )
 
-db_session = DbSession()
+        self._session: AsyncSession = AsyncSession(
+            bind=self._engine,
+            autocommit=False,
+            autoflush=False,
+            expire_on_commit=False,
+        )
+
+    def current_session(self) -> AsyncSession:
+        return self._session
+
+
+database = Database(getenv(
+    'DATABASE_DSN',
+    'postgresql+asyncpg://postgres:postgres@localhost:5435/web_store_cart',
+))
 
 Base = declarative_base()

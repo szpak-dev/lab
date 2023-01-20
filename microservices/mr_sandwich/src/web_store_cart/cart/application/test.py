@@ -11,6 +11,6 @@ class TestCommand(Command):
 
 
 class TestCommandHandler(CommandHandler):
-    async def handle(self, command: Command):
+    async def handle(self, command: TestCommand):
         cart = await cart_repository.get_active_for_customer(CustomerId(4))
         await cart_repository.save(cart)
