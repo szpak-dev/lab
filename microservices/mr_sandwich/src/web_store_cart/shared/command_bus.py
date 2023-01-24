@@ -1,13 +1,15 @@
 from __future__ import annotations
 
-from command_coach.adapter import AsyncDatabase
-from command_coach.bus import command_bus_maker
-from command_coach.plugin_included import LockingPlugin, TransactionPluginAsync
+from command_coach.adapter import DatabaseTransactionAsync
+from command_coach.bus import async_command_bus_maker
+from command_coach.command import Command
+from command_coach.plugin import CommandCoachPluginAsync
+from command_coach.plugin_included import LockingPluginAsync, TransactionPluginAsync
 
 from shared.db import database, Database
 
 
-class DatabaseAdapter(AsyncDatabase):
+class DatabaseAdapter(DatabaseTransactionAsync):
     def __init__(self, db: Database):
         self._session = db.current_session()
 
@@ -21,7 +23,26 @@ class DatabaseAdapter(AsyncDatabase):
         await self._session.rollback()
 
 
-bus = command_bus_maker([
-    LockingPlugin(),
+bus = async_command_bus_maker([
+    LockingPluginAsync(),
     TransactionPluginAsync(DatabaseAdapter(database)),
+])
+
+
+class CloseQueryTransactionPlugin(CommandCoachPluginAsync):
+    def __init__(self, async_database: DatabaseTransactionAsync):
+        self.database: DatabaseTransactionAsync = async_database
+
+    async def before_handle(self, command: Command):
+        await self.database.commit_transaction()
+
+    async def handle_failed(self):
+        await self.database.commit_transaction()
+
+    async def after_handle(self, command: Command):
+        await self.database.commit_transaction()
+
+
+query_bus = async_command_bus_maker([
+    CloseQueryTransactionPlugin(DatabaseAdapter(database))
 ])

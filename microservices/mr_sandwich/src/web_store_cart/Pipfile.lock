@@ -109,7 +109,7 @@
         },
         "commandcoach": {
             "git": "https://github.com/szpak-dev/command-coach.git",
-            "ref": "64dd2d95a5bede6e0903ad961eb647de4a02e642"
+            "ref": "7bad1488ac4fe506829fc02764062ca771f672b1"
         },
         "dnspython": {
             "hashes": [

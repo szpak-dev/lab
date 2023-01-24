@@ -1,14 +1,14 @@
-from shared.command_bus import bus
+from shared.command_bus import bus, query_bus
 from cart.application.add_product_to_cart import AddProductToCartCommand
 from cart.application.clear_cart import ClearCartCommand
 from cart.application.create_cart import CreateCartCommand
 from cart.application.remove_product_from_cart import RemoveProductFromCartCommand
-from cart.application.get_active_cart import provide
+from cart.application.get_active_cart import GetActiveCartQuery
 from cart.ui.http.responses import Cart
 
 
 async def get_active_cart(customer_id: int) -> Cart:
-    return await provide(customer_id)
+    return await query_bus.handle(GetActiveCartQuery(customer_id))
 
 
 async def create_cart(customer_id: int) -> None:

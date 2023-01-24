@@ -4,7 +4,8 @@ from adapters.sql_user_repository import SqlUserRepository
 from domain.ports.jwt_claims_repository import JwtClaimsRepository
 from domain.ports.session_repository import SessionRepository
 from domain.ports.user_repository import UserRepository
+from shared.async_db import database
 
-user_repository: UserRepository = SqlUserRepository()
+user_repository: UserRepository = SqlUserRepository(database)
 session_repository: SessionRepository = InMemorySessionRepository()
 jwt_claims_repository: JwtClaimsRepository = InMemoryJwtClaimsRepository()
