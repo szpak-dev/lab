@@ -40,6 +40,8 @@ asyncpg = "*"
 greenlet = "*"
 commandcoach = {git = "https://github.com/szpak-dev/command-coach.git"}
 asyncinit = "*"
+aio-pika = "*"
+httpx = "*"
 
 [dev-packages]
 

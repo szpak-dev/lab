@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from os import getenv
-
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import declarative_base
+
+from shared.config import settings
 
 
 class Database:
@@ -24,9 +23,4 @@ class Database:
         return self._session
 
 
-database = Database(getenv(
-    'DATABASE_DSN',
-    'postgresql+asyncpg://postgres:postgres@localhost:5435/web_store_cart',
-))
-
-Base = declarative_base()
+database = Database(settings['DATABASE_DSN'])

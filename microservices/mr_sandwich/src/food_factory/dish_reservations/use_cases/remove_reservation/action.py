@@ -1,4 +1,4 @@
-from dishes.services import Reservations
+from dish_reservations.services import Reservations
 
 
 def remove_reservation_action(reservation_id: int):

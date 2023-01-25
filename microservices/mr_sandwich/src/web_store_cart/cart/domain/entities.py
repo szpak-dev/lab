@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from cart.domain.erorrs import ProductNotInCart
 from cart.domain.events import ProductAddedToCart, ProductRemovedFromCart, CartCleared
 from cart.domain.value_objects import CartProductId, CustomerId
-from shared.db import Base
+from shared.db_orm import Base
 from shared.ddd import AggregateRoot
 from shared.shared import Money
 
@@ -17,6 +17,7 @@ class Cart(Base, AggregateRoot):
     id = Column(Integer, primary_key=True)
     cart_products = relationship('CartProduct', lazy='joined', cascade='all, delete-orphan')
     customer_id = Column(Integer)
+    reservation_id = Column(String, nullable=False)
     status = Column(String)
     total_price = Column(Float)
     created_at = Column(DateTime, default=datetime.now)

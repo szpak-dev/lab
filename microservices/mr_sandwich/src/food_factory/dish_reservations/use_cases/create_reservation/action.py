@@ -1,10 +1,11 @@
 from datetime import timedelta
 from django.utils import timezone
 
-from dishes.models import DishReservation
+from dish_reservations.models import DishReservation
 from .schemas import ReservationParams
-from dishes.services import Dishes, DailyAvailabilities, Reservations
-from dishes.errors import DailyAvailabilityNotCreatedYet
+from dish_reservations.services import DailyAvailabilities, Reservations
+from dishes.services import Dishes
+from dish_reservations.errors import DailyAvailabilityNotCreatedYet
 
 
 def create_reservation_action(new_reservation: ReservationParams) -> DishReservation:

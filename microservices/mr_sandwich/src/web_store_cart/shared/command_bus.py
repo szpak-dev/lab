@@ -34,10 +34,10 @@ class CloseQueryTransactionPlugin(CommandCoachPluginAsync):
         self.database: DatabaseTransactionAsync = async_database
 
     async def before_handle(self, command: Command):
-        await self.database.commit_transaction()
+        ...
 
     async def handle_failed(self):
-        await self.database.commit_transaction()
+        ...
 
     async def after_handle(self, command: Command):
         await self.database.commit_transaction()

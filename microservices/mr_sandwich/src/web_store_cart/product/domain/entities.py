@@ -1,6 +1,8 @@
 from datetime import datetime
-from shared.db import Base
+
 from sqlalchemy import Column, Integer, String, Text, Float, DateTime
+
+from shared.db_orm import Base
 from shared.ddd import AggregateRoot
 
 

@@ -1,10 +1,6 @@
 from django.contrib import admin
 
-from .models import Dish
-from .models import RecipeIngredient
-from .models import Ingredient
-from .models import Recipe
-from .models import RecipeStep
+from .models import Dish, RecipeIngredient, Ingredient, Recipe, RecipeStep
 
 
 @admin.register(Ingredient)

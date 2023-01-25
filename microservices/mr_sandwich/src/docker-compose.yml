@@ -121,6 +121,10 @@ services:
     image: rabbitmq:3.11.2-management
     container_name: microservices_mr_sandwich_rabbitmq
     hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15671:15671"
+      - "15672:15672"
     networks:
       - microservices_mr_sandwich
 

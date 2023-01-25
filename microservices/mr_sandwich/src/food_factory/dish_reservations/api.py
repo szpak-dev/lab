@@ -1,19 +1,20 @@
-from django.urls import path
-from ninja import NinjaAPI
+from ninja import Router
 from ninja.responses import codes_4xx
 
 from app.schema import Error
-from dishes.errors import DishNotFound, DishBecameUnavailable, RevisionIsOutdated, ReservationNotFound
-from dishes.use_cases.create_reservation.action import create_reservation_action
-from dishes.use_cases.create_reservation.schemas import NewReservation, ReservationParams
-from dishes.use_cases.get_reservation.action import get_reservation_action
-from dishes.use_cases.get_reservation.schemas import Reservation
-from dishes.use_cases.remove_reservation.action import remove_reservation_action
+from dish_reservations.errors import DishBecameUnavailable, RevisionIsOutdated, ReservationNotFound
+from dish_reservations.use_cases.create_reservation.action import create_reservation_action
+from dish_reservations.use_cases.create_reservation.schemas import NewReservation, ReservationParams
+from dish_reservations.use_cases.get_reservation.action import get_reservation_action
+from dish_reservations.use_cases.get_reservation.schemas import Reservation
+from dish_reservations.use_cases.remove_reservation.action import remove_reservation_action
+from dishes.errors import DishNotFound
 
-api = NinjaAPI()
+
+dish_reservations_router = Router()
 
 
-@api.post('/', response={
+@dish_reservations_router.post('/', response={
     201: NewReservation,
     codes_4xx: Error,
 })
@@ -28,7 +29,7 @@ def create_reservation(request, data: ReservationParams):
         return 409, {'message': 'Revision is outdated'}
 
 
-@api.get('{int:reservation_id}/customers/{int:customer_id}', response={
+@dish_reservations_router.get('{int:reservation_id}/customers/{int:customer_id}', response={
     200: Reservation,
     codes_4xx: Error,
 })
@@ -39,7 +40,7 @@ def get_reservation(request, reservation_id: int, customer_id: int):
         return 404, {'message': 'Reservation not found'}
 
 
-@api.delete('/{int:reservation_id}', response={
+@dish_reservations_router.delete('/{int:reservation_id}', response={
     204: None,
     codes_4xx: Error,
 })
@@ -49,8 +50,3 @@ def remove_reservation(request, reservation_id: int):
         return 204, None
     except ReservationNotFound:
         return 404, {'message': 'Reservation not found'}
-
-
-urlpatterns = [
-    path('reservations/', api.urls),
-]

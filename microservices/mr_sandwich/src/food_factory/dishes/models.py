@@ -7,6 +7,9 @@ class Ingredient(models.Model):
     calories_per_100g = models.FloatField()
     created_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        db_table = 'ingredients'
+
     def __str__(self):
         return self.name
 
@@ -21,6 +24,9 @@ class Recipe(models.Model):
     notes = models.CharField(max_length=255)
     created_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        db_table = 'recipes'
+
     def __str__(self):
         return self.name
 
@@ -32,6 +38,9 @@ class RecipeIngredient(models.Model):
     quantity_label = models.CharField(max_length=16)
     created_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        db_table = 'recipe_ingredients'
+
     def __str__(self):
         return self.ingredient.name
 
@@ -41,6 +50,9 @@ class RecipeStep(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     instructions = models.CharField(max_length=255)
     created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'recipe_steps'
 
     def __str__(self):
         return '{} > {}'.format(self.recipe.name, self.ingredient.name)
@@ -54,22 +66,8 @@ class Dish(models.Model):
     daily_limit = models.FloatField()
     created_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        db_table = 'dishes'
+
     def __str__(self):
         return self.name
-
-
-class DishDailyAvailability(models.Model):
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
-    day = models.DateField(default=timezone.now)
-    available_count = models.IntegerField()
-    revision = models.IntegerField(default=1)
-
-    class Meta:
-        unique_together = ('dish', 'day')
-
-
-class DishReservation(models.Model):
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
-    customer_id = models.CharField(max_length=64)
-    ttl_minutes = models.IntegerField(default=15)
-    created_at = models.DateTimeField(default=timezone.now)

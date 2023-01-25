@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.schema import ErrorResponse
+from app.schema import Error
 
 
 class RemoveReservationParams(BaseModel):
@@ -8,5 +8,5 @@ class RemoveReservationParams(BaseModel):
     reservation_id: int
 
 
-class ReservationNotFoundResponse(ErrorResponse):
+class ReservationNotFoundResponse(Error):
     """Reservation not found"""

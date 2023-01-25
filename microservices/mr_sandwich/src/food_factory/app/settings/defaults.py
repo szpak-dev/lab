@@ -25,14 +25,14 @@ DJANGO_SETTINGS_MODULE = os.getenv('DJANGO_SETTINGS_MODULE', 'app.settings.dev')
 # Application definition
 
 INSTALLED_APPS = [
-    'dishes.apps.DishesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    'dish_reservations',
+    'dishes',
 ]
 
 MIDDLEWARE = [
@@ -45,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'app.urls'
+ROOT_URLCONF = 'app.api'
 
 TEMPLATES = [
     {

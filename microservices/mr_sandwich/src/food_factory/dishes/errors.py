@@ -1,22 +1,9 @@
-class DishError(RuntimeError):
-    pass
+from app.errors import FoodFactoryError
+
+
+class DishError(FoodFactoryError):
+    ...
 
 
 class DishNotFound(DishError):
-    pass
-
-
-class ReservationNotFound(DishError):
-    pass
-
-
-class DishBecameUnavailable(DishError):
-    pass
-
-
-class DailyAvailabilityNotCreatedYet(DishError):
-    pass
-
-
-class RevisionIsOutdated(DishError):
-    pass
+    ...

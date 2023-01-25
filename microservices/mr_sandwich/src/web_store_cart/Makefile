@@ -7,5 +7,8 @@ envs:
 dev:
 	uvicorn main:app --reload --port 8002 --log-level info
 
-mm:
-	alembic revision --autogenerate -m "${m}"
+generate-migration:
+	cd _migrations && alembic revision --autogenerate -m "${m}"
+
+migrate:
+	cd _migrations && alembic upgrade head
