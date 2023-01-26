@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from shared.logger import logging
 from cart.ui.http import controllers as cart_controllers
@@ -9,12 +10,15 @@ from cart.ui.http.responses import Cart
 from product.ui.http.responses import Product, ProductListItem
 from cart.ui.http.requests import AddProductToCart
 
-app = FastAPI(debug=True)
+app = FastAPI(
+    root_path='/web_store_cart'
+)
 
 
 @app.on_event('startup')
 async def on_startup():
     logging.info('Starting web_store_cart application')
+    Instrumentator().instrument(app).expose(app, endpoint='/web_store_cart/metrics')
 
 
 @app.get('/web_store_cart/carts', status_code=200, response_model=Cart, tags=['Cart'])

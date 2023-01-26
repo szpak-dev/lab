@@ -7,7 +7,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('producing...')
-        for i in range(1, 10000):
+        for i in range(2, 7):
             publish_dish_updated(i)
-            publish_dish_updated(i)
-            publish_dish_updated(i)
+        quit(0)

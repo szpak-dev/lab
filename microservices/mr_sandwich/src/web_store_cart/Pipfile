@@ -42,6 +42,7 @@ commandcoach = {git = "https://github.com/szpak-dev/command-coach.git"}
 asyncinit = "*"
 aio-pika = "*"
 httpx = "*"
+prometheus-fastapi-instrumentator = "*"
 
 [dev-packages]
 

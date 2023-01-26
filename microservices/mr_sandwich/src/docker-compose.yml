@@ -126,17 +126,24 @@ services:
     networks:
       - microservices_mr_sandwich
 
-#  central_log:
-#    image: rsyslog/syslog_appliance_alpine
-#    container_name: microservices_mr_sandwich_central_log
-#    hostname: central_log
-#    networks:
-#      - microservices_mr_sandwich
-#    volumes:
-#      - central_logs:/logs
-#    environment:
-#      - TZ=Europe/Warsaw
-#      - FWD_TO_HOST=central_log
+  prometheus:
+    image: prom/prometheus:v2.41.0
+    container_name: microservices_mr_sandwich_prometheus
+    hostname: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - microservices_mr_sandwich
+    build:
+      context: ./prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
 
 
 networks:
@@ -149,3 +156,4 @@ volumes:
   db_food_factory:
   db_web_store_cart:
   rabbitmq:
+  prometheus_data:

@@ -29,17 +29,17 @@ async def bind_routing_keys(exchange: AbstractExchange, queue: AbstractQueue, ro
     for key in routing_keys:
         await queue.bind(exchange, routing_key=key)
 
-
-async def process_message(message: AbstractIncomingMessage) -> None:
-    async with message.process(requeue=True):
-        dish_id = loads(message.body)[0]
-        operation_type = message.routing_key
-        try:
-            await bus.handle(UpdateProductCommand(dish_id, operation_type))
-            logging.debug(f'Product change operation executed: ({operation_type}, {dish_id})')
-        except ProductError as e:
-            logging.error(str(e))
-            raise NackMessage
+#
+# async def process_message(message: AbstractIncomingMessage) -> None:
+#     async with message.cb(requeue=True):
+#         dish_id = loads(message.body)[0]
+#         operation_type = message.routing_key
+#         try:
+#             await bus.handle(UpdateProductCommand(dish_id, operation_type))
+#             logging.debug(f'Product change operation executed: ({operation_type}, {dish_id})')
+#         except ProductError as e:
+#             logging.error(str(e))
+#             raise NackMessage
 
 
 async def main() -> None:
@@ -55,8 +55,8 @@ async def main() -> None:
         async with queue.iterator() as iterator:
             message: AbstractIncomingMessage
             async for message in iterator:
-                await process_message(message)
-
+                # await process_message(message)
+                pass
         await asyncio.Future()
 
 
