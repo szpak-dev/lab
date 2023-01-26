@@ -13,12 +13,12 @@ class ProductNotFound(ProductError):
 
 
 @docstring_message
-class ProductCannotBeCreated(ProductError):
+class ProductMustNotExist(ProductError):
     """Product with given dish_id already exists"""
 
 
 @docstring_message
-class ProductCannotBeUpdated(ProductError):
+class ProductMustExist(ProductError):
     """Product with given dish_id does not exist"""
 
 

@@ -20,10 +20,10 @@ class SqlProductRepository(ProductRepository):
                 select(Product)
                 .filter(Product.id == product_id.id)
             )
+
+            return result.scalars().one()
         except NoResultFound:
             raise ProductNotFound
-
-        return result.scalars().one()
 
     async def get_by_dish_id(self, dish_id: int) -> Product:
         try:
@@ -31,18 +31,17 @@ class SqlProductRepository(ProductRepository):
                 select(Product)
                 .filter(Product.dish_id == dish_id)
             )
+
+            return result.scalars().one()
         except NoResultFound:
             raise ProductNotFound
-
-        return result.scalars().one()
 
     async def get_all(self) -> List[Product]:
         try:
             result = await self.session.execute(select(Product))
+            return result.scalars().all()
         except NoResultFound:
             raise ProductNotFound
-
-        return result.scalars().all()
 
     async def save(self, product: Product) -> None:
         self.session.add(product)
