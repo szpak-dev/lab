@@ -11,3 +11,17 @@ class ProductError(DomainError):
 class ProductNotFound(ProductError):
     """Product not found"""
 
+
+@docstring_message
+class ProductCannotBeCreated(ProductError):
+    """Product with given dish_id already exists"""
+
+
+@docstring_message
+class ProductCannotBeUpdated(ProductError):
+    """Product with given dish_id does not exist"""
+
+
+@docstring_message
+class DishCouldNotBeFound(ProductError):
+    """Dish does not exist in Food Factory"""

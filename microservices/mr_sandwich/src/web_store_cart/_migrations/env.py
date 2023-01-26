@@ -6,7 +6,7 @@ from alembic import context
 
 from logging.config import fileConfig
 from shared.db_orm import Base
-from config import settings
+from shared.config import settings
 
 
 # this is the Alembic Config object, which provides

@@ -10,6 +10,7 @@ class Product(Base, AggregateRoot):
     __tablename__ = 'products'
 
     id = Column(Integer, primary_key=True)
+    dish_id = Column(Integer, nullable=False)
     name = Column(String)
     description = Column(Text)
     price = Column(Float)

@@ -1,3 +1,5 @@
+from typing import List
+
 from django.db import models
 from django.utils import timezone
 
@@ -6,6 +8,10 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=255)
     calories_per_100g = models.FloatField()
     created_at = models.DateTimeField(default=timezone.now)
+
+    @property
+    def calories(self):
+        return self.calories_per_100g
 
     class Meta:
         db_table = 'ingredients'
@@ -65,6 +71,10 @@ class Dish(models.Model):
     description = models.TextField()
     daily_limit = models.FloatField()
     created_at = models.DateTimeField(default=timezone.now)
+
+    @property
+    def ingredients(self) -> List[Ingredient]:
+        return self.recipe.ingredients.all()
 
     class Meta:
         db_table = 'dishes'

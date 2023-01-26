@@ -12,6 +12,10 @@ class ProductRepository(ABC):
         ...
 
     @abstractmethod
+    async def get_by_dish_id(self, dish_id: int) -> Product:
+        ...
+
+    @abstractmethod
     async def get_all(self) -> List[Product]:
         ...
 
@@ -22,5 +26,5 @@ class ProductRepository(ABC):
 
 class FoodFactoryDishRepository(ABC):
     @abstractmethod
-    async def get_by_id(self, product_id: int) -> FoodFactoryDish:
+    async def get_by_dish_id(self, dish_id: int) -> FoodFactoryDish:
         ...

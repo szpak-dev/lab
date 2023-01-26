@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import List
 
 from fastapi import FastAPI
 
@@ -7,7 +6,7 @@ from shared.logger import logging
 from cart.ui.http import controllers as cart_controllers
 from product.ui.http import controllers as product_controllers
 from cart.ui.http.responses import Cart
-from product.ui.http.responses import Product
+from product.ui.http.responses import Product, ProductListItem
 from cart.ui.http.requests import AddProductToCart
 
 app = FastAPI(debug=True)
@@ -43,9 +42,11 @@ async def clear_cart(cart_id: int, customer_id: int):
     await cart_controllers.clear_cart(cart_id, customer_id)
 
 
-@app.get('/web_store_cart/products', status_code=200, response_model=List[Product], tags=['Product'])
+@app.get('/web_store_cart/products', status_code=200, response_model=list[ProductListItem], tags=['Product'])
 async def get_products_list():
-    return await product_controllers.get_all_products()
+    p = await product_controllers.get_all_products()
+    print(p[0])
+    return p
 
 
 @app.get('/web_store_cart/products/{product_id}', status_code=200, response_model=Product, tags=['Product'])

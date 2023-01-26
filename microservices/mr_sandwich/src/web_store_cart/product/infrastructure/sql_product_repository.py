@@ -18,7 +18,18 @@ class SqlProductRepository(ProductRepository):
         try:
             result = await self.session.execute(
                 select(Product)
-                .filter(Product.pk == product_id.id)
+                .filter(Product.id == product_id.id)
+            )
+        except NoResultFound:
+            raise ProductNotFound
+
+        return result.scalars().one()
+
+    async def get_by_dish_id(self, dish_id: int) -> Product:
+        try:
+            result = await self.session.execute(
+                select(Product)
+                .filter(Product.dish_id == dish_id)
             )
         except NoResultFound:
             raise ProductNotFound
@@ -31,7 +42,7 @@ class SqlProductRepository(ProductRepository):
         except NoResultFound:
             raise ProductNotFound
 
-        return result.all()
+        return result.scalars().all()
 
     async def save(self, product: Product) -> None:
         self.session.add(product)

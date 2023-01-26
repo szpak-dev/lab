@@ -4,6 +4,7 @@ from .defaults import *
 DEBUG = False
 
 dsn = dsnparse.parse_environ('DATABASE_DSN')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

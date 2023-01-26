@@ -16,7 +16,7 @@ ENV APP_LOG_LEVEL=warning
 ENV DATABASE_DSN=postgresql://postgres:postgres@default:5432/db
 ENV RABBITMQ_DSN=amqp://guest:guest@rabbitmq:5672//
 ENV JWT_SECRET=lnx4q37tx7q34yxty7nq34txqi3g4xtiqvvfvzlfgqi
-ENV FOOD_FACTORY_URL=food_factory
+ENV FOOD_FACTORY_URL=http://food_factory
 
 WORKDIR /app
 COPY --from=builder /app .
