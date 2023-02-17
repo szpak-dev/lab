@@ -1,25 +1,12 @@
 # Welcome To The Microservices Tutorial Lab
-Learning new technologies shouldn't go without some good practise, that's why I'm giving you a fully configured and
-production ready system, which will help you better understand Microservices-related concepts.
+Learning new technologies shouldn't go without some good practice, that's why I'm giving you a fully configured and
+production-ready system, which will help you better understand Microservices-related concepts.
 
 ## Ingredients
 As you can see, there are two directories in the root of this tutorial: `specification`, which contains all necessary
 documentation, and `src` containing Microservices. This is supposed to be your main workspace, every topic mentioned
-in the articles being part of [Microservices](https://szpak.dev/tutorials#microservices) tutorial on the 
-**[Information Technology](https://szpak.dev/)** blog.
-
-## Running The Stack
-Everything is configured and waiting to be built. To initiate the stack, simply run:
-
-```shell
-docker-compose up -d
-```
-
-Load Balancing service, which serves mostly as a Reverse Proxy is configured with a default domain, which is: 
-`mr_sandwich.localhost`, so don't forget to edit your `hosts` file.
-
-After few minutes everything will be installed and ready to work. Go to `https://mr_sandwich.localhost/auth/login` and 
-if you can see a login form, it means that everything was provisioned successfully.
+in the articles being part of [Microservices](https://www.szpak.dev/tutorials#microservices) tutorial on the 
+**[Information Technology by Tomasz Szpak](https://www.szpak.dev/)** blog.
 
 ## What Is Inside?
 This project resides within **monolithic repository** (monorepo). All microservices are being kept and managed from the

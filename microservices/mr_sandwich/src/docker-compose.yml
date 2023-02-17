@@ -1,13 +1,13 @@
 version: '3.7'
 services:
 
-  load_balancer:
-    container_name: microservices_mr_sandwich_load_balancer
-    hostname: load_balancer
+  reverse_proxy:
+    container_name: microservices_mr_sandwich_reverse_proxy
+    hostname: reverse_proxy
     networks:
       - microservices_mr_sandwich
     build:
-      context: ./load_balancer
+      context: ./reverse_proxy
     ports:
       - "80:80"
       - "443:443"

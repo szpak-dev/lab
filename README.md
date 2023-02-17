@@ -1,9 +1,9 @@
 # Laboratory (szpak.dev)
-Welcome to the `Lab`, which is a practical side of tutorials ar articles available on 
-[Information Technology](https://www.szpak.dev) blog and learning center. Let's get to work.
+Welcome to the **Lab**, which is a practical side of tutorials ar articles available on 
+[Information Technology by Tomasz Szpak](https://www.szpak.dev) blog and learning center. Let's get to work.
 
 # What Is Inside?
-`Lab` is a project, which contains another projects inside, depending on their categories. They live inside directories,
+**Lab** is a project, which contains another projects inside, depending on their categories. They live inside directories,
 which are named using the pattern:
 
 ```shell

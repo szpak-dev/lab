@@ -1,63 +1,31 @@
 import asyncio
 from json import loads
-from typing import List
 
-from aio_pika import ExchangeType, connect
-from aio_pika.abc import AbstractIncomingMessage, AbstractQueue, AbstractExchange, AbstractConnection, AbstractChannel
-from aio_pika.patterns import NackMessage
+from aio_pika.abc import AbstractIncomingMessage
 
-from product.domain.erorrs import ProductError
+from shared.amqp_pack_adapter import AioPikaAsyncConsumer
+from shared.amqp_pack_consumer import AmqpConsumerAdapter
 from shared.config import settings
-from shared.command_bus import bus
-from shared.logger import logging
-from product.application.update_product import UpdateProductCommand
 
 
-async def create_channel(connection: AbstractConnection) -> AbstractChannel:
-    channel = await connection.channel()
-    await channel.set_qos(prefetch_count=1)
-    return channel
+async def main():
+    async def process_message(message: AbstractIncomingMessage) -> None:
+        async with message.process(requeue=True):
+            dish_id = loads(message.body)[0]
+            operation_type = message.routing_key
+            print(dish_id, operation_type)
 
+    amqp = AmqpConsumer(settings['RABBITMQ_DSN'])
+    amqp.in_exchange('food_factory')
+    amqp.will_have_a_queue('dishes', ['dish_created', 'dish_updated', 'dish_removed'])
 
-async def declare_exchange_and_queue(channel: AbstractChannel, exchange_name: str, queue_name: str):
-    exchange = await channel.declare_exchange(exchange_name, ExchangeType.DIRECT, durable=True)
-    queue = await channel.declare_queue(name=queue_name, durable=True)
-    return exchange, queue
+    amqp.in_exchange('auth')
+    amqp.will_have_a_queue('users', ['user_promoted', 'user_demoted'])
+    amqp.will_have_a_queue('authentications', ['success', 'failed'])
 
-
-async def bind_routing_keys(exchange: AbstractExchange, queue: AbstractQueue, routing_keys: List[str]) -> None:
-    for key in routing_keys:
-        await queue.bind(exchange, routing_key=key)
-
-#
-# async def process_message(message: AbstractIncomingMessage) -> None:
-#     async with message.cb(requeue=True):
-#         dish_id = loads(message.body)[0]
-#         operation_type = message.routing_key
-#         try:
-#             await bus.handle(UpdateProductCommand(dish_id, operation_type))
-#             logging.debug(f'Product change operation executed: ({operation_type}, {dish_id})')
-#         except ProductError as e:
-#             logging.error(str(e))
-#             raise NackMessage
-
-
-async def main() -> None:
-    connection = await connect(settings['RABBITMQ_DSN'])
-
-    async with connection:
-        channel = await create_channel(connection)
-        exchange, queue = await declare_exchange_and_queue(channel, 'food_factory', 'dishes')
-
-        routing_keys = ['dish_created', 'dish_updated', 'dish_removed']
-        await bind_routing_keys(exchange, queue, routing_keys)
-
-        async with queue.iterator() as iterator:
-            message: AbstractIncomingMessage
-            async for message in iterator:
-                # await process_message(message)
-                pass
-        await asyncio.Future()
+    aio_pika: AmqpConsumerAdapter = AioPikaAsyncConsumer(amqp.connection)
+    aio_pika_queues = await aio_pika.connect()
+    await aio_pika.consume(aio_pika_queues, process_message)
 
 
 if __name__ == "__main__":
